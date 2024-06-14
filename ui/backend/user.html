@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ @SITE_NAME }}</title>
+    <include href="backend/inc/header.html" />
+</head>
+
+<body class="md-skin">
+    <div id="wrapper">
+    <include href="backend/inc/nav.html" />
+        <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom">
+          <include href="backend/inc/topnav.html" />
+        </div>
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10 la">
+                <h2>{{ @strPage }}</h2>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active la">
+                        <strong>{{ @strAction }}</strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+            </div>
+        </div>
+
+        <div class="wrapper wrapper-content">
+          <div class="ibox float-e-margins">
+            <div class="ibox-title la">
+                <h5>{{ @strAction }}</h5>
+            </div>
+
+            <div class="ibox-content">            
+                <form class="form-horizontal la" id="submit-form" action="{{@BASE}}/user" method="{{ @method }}">
+                    <input type="hidden" name="id" value="{{ @id ?? '' }}">
+                    <div class="form-group"><label class="col-sm-2 control-label">ຊື່ຜູ້ໃຊ້</label>
+                        <div class="col-sm-10">
+                            <input name="full_name" type="text" class="form-control" value="{{ @item->full_name ?? '' }}">
+                             <div class="error"></div>
+                        </div>
+                    </div>
+                    <div class="form-group"><label class="col-sm-2 control-label">ອີເມວ</label>
+                        <div class="col-sm-10">
+                            <input name="email" type="text" value="{{ @item->email ?? '' }}" class="form-control">
+                            <div class="error"></div>
+                        </div>
+                    </div>
+                    <div class="form-group"><label class="col-sm-2 control-label">ລະຫັດຜ່ານ</label>
+                        <div class="col-sm-10">
+                            <input name="password" type="text" class="form-control">
+                            <div class="error"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">ບົດບາດ</label>
+                        <div class="col-sm-10">
+                            <input type="radio" id="admin" name="role" value="admin">
+                            <label for="admin">ແອັດມິນ</label><br>
+                            <input type="radio" id="emp_meter" name="role" value="emp_meter">
+                            <label for="emp_meter">ພະນັກງານຈົດເລກກົງເຕີ</label><br>
+                            <input type="radio" id="emp_finance" name="role" value="emp_finance">
+                            <label for="emp_finance">ພະນັກງານເກັບເງິນ</label>
+                            <div class="error"></div>
+                        </div>
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <button class="btn-sumit btn btn-primary la" type="submit">ບັນທືກ <i class="fa"></i></button>
+                            <a class="btn btn-white ls" href="{{@BASE}}/user">ຍົກເລີກ</a>                                        
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+ <include href="backend/inc/footer.html" />
+</div>
+<include href="backend/inc/script.html" />    
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#submit-form').submit(function(e){
+            var form = $(e.target);
+            if(form.is("#submit-form")){ // check if this is the form that you want (delete this check to apply this to all forms)
+                e.preventDefault();
+                if ($("#submit-form").valid()) {
+                    $.ajax({
+                        type: form.attr("method"),            
+                        url: form.attr("action"), 
+                        data: form.serialize(), // serializes the form's elements.              
+                        beforeSend: function() {
+                         $("button.btn-sumit").prop('disabled', true);
+                         $('button.btn-sumit').css('cursor','not-allowed');
+                         $('button.btn-sumit i.fa').addClass( "fa-refresh fa-spin" );
+                        },  
+                        success: function(data) {
+                            if (data.success == true) {
+                                Swal.fire({
+                                    title: "Success",
+                                    icon: "success",
+                                    text:data.message,
+                                    confirmButtonColor: "#000000",
+                                    confirmButtonText: "Yes,Ok",
+                                }).then((result)=>{
+                                    if(result.isConfirmed){
+                                        window.location.href = '{{@BASE}}/user';
+                                    }
+                                });
+                            } else {
+                                Swal.fire("Error!", data.message, "error");
+                                $('button.btn-sumit i.fa').removeClass( "fa-refresh fa-spin" );
+                                $('button.btn-sumit').removeAttr('style');
+                                $("button.btn-sumit").prop('disabled', false);
+                            }
+                        },
+                        error: function () {
+                            Swal.fire("Error!", "Error during proccessing!", "error");
+                            $('button.btn-sumit i.fa').removeClass( "fa-refresh fa-spin" );
+                            $('button.btn-sumit').removeAttr('style');
+                            $("button.btn-sumit").prop('disabled', false);
+                        },
+                    });
+                }
+            }
+        });
+
+        $("#submit-form").validate({
+            rules: {
+                full_name: {
+                    required: true
+                },
+                email: {
+                    required: true
+                },
+                phone: {
+                    required: true,
+                },
+                role: {
+                    required: true,
+                }
+            },
+            messages: {
+                full_name: {
+                    required: "ກະລຸນາປ້ອນຊື່.",
+                },
+                email: {
+                    required: "ກະລຸນາປ້ອນອີເມວ.",
+                },
+                phone: {
+                    required: "ກະລຸນາປ້ອນເບີໂທ.",
+                },
+                role: {
+                    required: "ກະລຸນາເລືອກ.",
+                }
+            },
+            errorPlacement: function(error, element) {
+                error.appendTo(element.closest('div.form-group').find('div.error'));
+            },
+            success: function(label) {
+                label.remove();
+            },
+            highlight: function(element, errorClass) {
+                $(element).parent().next().find("." + errorClass).removeClass("checked");
+            }
+        });
+    });
+</script>
+</body>
+</html>
+

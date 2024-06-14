@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><?= ($SITE_NAME) ?></title>
+  <?php echo $this->render('backend/inc/header.html',NULL,get_defined_vars(),0); ?>
+  <style type="text/css">
+    form{position:relative;}
+    .grecaptcha-badge{display: none;}
+  .alert{border-radius: 0px;}
+  </style>
+</head>
+<body class="black-bg login-bg">
+<div class="login-box">
+  <div class="login-inner-box">
+    <div class="login-left">
+      <img src="<?= ($BASE) ?>/uploads/logo.png" style="width: 200px;">
+    </div>
+    <div class="login-right">
+      <h1>Welcome, <span>Login into your account</span></h1>
+      <div class="alert hide"></div>
+      <form class="m-t" id="submit-form" role="form" action="<?= ($BASE) ?>/login" method="POST">
+        <div class="form-group">
+          <input type="text" name="email" id="email" class="form-control" placeholder="Email" required="" autofocus="">
+        </div>
+        <div class="form-group">
+          <input type="password" name="password" id="password" class="form-control" placeholder="Password" required="">
+        </div>
+        <button type="button" class="btn btn-primary block full-width btn-submit" id="submitBtn">Login <i class="fa"></i></button>
+      </form>
+    </div>
+  </div>
+</div>
+<?php echo $this->render('backend/inc/script.html',NULL,get_defined_vars(),0); ?>
+<script type="text/javascript">
+$(document).ready(function(){
+  $( document ).on( "keydown","#email", function(event) {
+    if($('#email').val() != '' && $('#password').val() != ''){
+      if(event.which == 13) {
+        $('.btn-submit').click();
+      }
+    }
+  });
+
+  $( document ).on( "keydown","#password", function(event) {
+    if($('#email').val() != '' && $('#password').val() != ''){
+      if(event.which == 13) {
+        $('.btn-submit').click();
+      }
+    }
+  });
+
+  $(document).on('click','.btn-submit',function(){
+    if ($('#email').val() != '' && $('#password').val() != '') {
+      $.ajax({
+        type : 'POST',
+        url  : $('#submit-form').attr('action'),
+        data : $('#submit-form').serialize(),
+        beforeSend: function() {
+          jQuery("button.btn-submit").prop('disabled', true);
+          jQuery('button.btn-submit').css('cursor','not-allowed');
+          jQuery('button.btn-submit i.fa').addClass( "fa-refresh fa-spin" );
+        },
+        success : function(data){
+          if(data.success == 1) {
+            location.reload();
+          } else {
+            $('.alert').removeClass('hide');
+            $('.alert').addClass('alert-danger').text(data.message);
+            jQuery("button.btn-submit").prop('disabled', false);
+            jQuery('button.btn-submit').removeAttr('style');
+            jQuery('button.btn-submit i.fa').removeClass( "fa-refresh fa-spin" );
+          }
+        },
+        error: function(){
+          $('.alert').removeClass('hide');
+          $('.alert').addClass('alert-danger').text('Something wrong!');
+        }
+      });
+    }
+  });
+});
+</script>
+</body>
+</html>

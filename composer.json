@@ -1,0 +1,7 @@
+{
+    "require": {
+        "bcosca/fatfree-core": "^3.6",
+        "dompdf/dompdf": "^0.8.2",
+        "firebase/php-jwt": "^6.10"
+    }
+}

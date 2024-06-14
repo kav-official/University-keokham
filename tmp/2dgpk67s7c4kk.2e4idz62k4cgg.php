@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= ($SITE_NAME) ?></title>
+    <?php echo $this->render('backend/inc/header.html',NULL,get_defined_vars(),0); ?>
+</head>
+<body class="md-skin">
+    <div id="wrapper">
+    <?php echo $this->render('backend/inc/nav.html',NULL,get_defined_vars(),0); ?>
+        <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom">
+          <?php echo $this->render('backend/inc/topnav.html',NULL,get_defined_vars(),0); ?>
+        </div>
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10 la">
+                <h2><?= ($strPage) ?></h2>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active la">
+                        <strong><?= ($strAction) ?></strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+            </div>
+        </div>
+
+        <div class="wrapper wrapper-content">
+          <div class="ibox float-e-margins">
+              <div class="ibox-title la">
+                  <h5><?= ($strAction) ?> (<?= ($entrycount) ?>)</h5>
+              </div>
+            <div class="ibox-content">
+              <div class="ibox-title text-right la">
+                <a href="<?= ($BASE) ?>/user/edit" class="btn btn-success">ເພີມໃໝ່</a>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover datatables-content">
+                  <thead>
+                    <tr>
+                      <th class="la">ບົດບາດ</th>
+                      <th class="la">ຊື່ຜູ້ໃຊ້</th>
+                      <th class="la">ອີເມວ</th>
+                      <th class="la">ວັນທີສ້າງ</th>
+                      <th class="text-center la">ຈັດການ</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <?php foreach (($items?:[]) as $row): ?>
+                    <tr id="item-<?= ($row['id']) ?>">
+                      <td>
+                        <?php if ($row['role'] == 'admin'): ?>
+                          ແອັດມິນ
+                        <?php endif; ?>
+                        <?php if ($row['role'] == 'emp_meter'): ?>
+                          ພະນັກງານຈົດເລກກົງເຕີ
+                        <?php endif; ?>
+                        <?php if ($row['role'] == 'emp_finance'): ?>
+                          ພະນັກງານເກັບເງິນ
+                        <?php endif; ?>
+                      </td>
+                      <td><?= ($row['full_name']) ?> </td>
+                      <td><?= ($row['email']) ?></td>
+                      <td><?= (date('d/m/Y H:i:s A', $row['created_at'])) ?></td>
+                      <td class="text-center">
+                        <div class="btn-group action-tooltip">
+                          <?php if ($LOGON_USER_ROLE =='admin'): ?>
+                            
+                              <a href="<?= ($BASE) ?>/user/edit/<?= ($row['id']) ?>" class="btn-white btn btn-sm" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i></a>
+                              <?php if ($row['active']==0): ?>
+                                
+                                  <button class="btn-white btn btn-sm ajax-access" active="0" data-toggle="tooltip" data-placement="top" id="<?= ($row['id']) ?>" url="<?= ($BASE) ?>/user/access" title="Un Active"><i class="fa fa-toggle-off"></i></button>
+                                
+                                <?php else: ?>
+                                  <button class="btn-white btn btn-sm ajax-access" active="1" data-toggle="tooltip" data-placement="top" id="<?= ($row['id']) ?>" url="<?= ($BASE) ?>/user/access" title="Active"><i class="fa fa-toggle-on"></i></button>
+                                
+                              <?php endif; ?>
+                              <button class="btn-white btn btn-sm ajax-delete" data-toggle="tooltip" data-placement="top" id="<?= ($row['id']) ?>" url="<?= ($BASE) ?>/user" title="Delete"><i class="fa fa-trash"></i></button>
+                           
+                         <?php endif; ?>                                            
+                        </div>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>       
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="6" class="footable-visible text-right">
+                        <nav aria-label="Page navigation example">
+                          <ul class="pagination">
+                              <li class="page-item">
+                                  <a class="page-link" href="<?= ($BASE) ?>/user?pg=1&limit=<?= ($limit) ?>" aria-label="Previous">
+                                      <span aria-hidden="true">&laquo;</span>
+                                      <span class="sr-only">Previous</span>
+                                  </a>
+                              </li>
+                              <li class="page-item <?= ($singlePrevious['class'] ?? '') ?>"><a class="page-link" href="<?= ($BASE) ?>/user?pg=<?= ($singlePrevious['pg'] ?? '') ?>&limit=<?= ($limit) ?>">&#8249;</a></li>
+      
+                              <?php if (count($PreviousStart)>0): ?>
+                              
+                                  <li class="page-item <?= ($PreviousStart['class'] ?? '') ?>"><a class="page-link" href="<?= ($BASE) ?>/user?pg=<?= ($PreviousStart['pg'] ?? '') ?>&limit=<?= ($limit) ?>"><?= ($PreviousStart['pg']) ?></a></li>
+                                  <li class="page-item"><a class="page-link" href="#">...</a></li>
+                              
+                              <?php endif; ?>
+      
+                              <?php foreach (($arrPagination?:[]) as $paginationRow): ?>
+                              <li class="page-item <?= ($paginationRow['class'] ?? '') ?>"><a class="page-link" href="<?= ($BASE) ?>/user?pg=<?= ($paginationRow['pg'] ?? '') ?>&limit=<?= ($limit) ?>"><?= ($paginationRow['pg']) ?></a></li>
+                              <?php endforeach; ?>
+      
+                              <?php if (count($singleNexPage)>0): ?>
+                              
+                                  <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                  <li class="page-item <?= ($doubleNexPage['class'] ?? '') ?>"><a class="page-link" href="<?= ($BASE) ?>/user?pg=<?= ($doubleNexPage['pg'] ?? '') ?>&limit=<?= ($limit) ?>"><?= ($doubleNexPage['pg']) ?></a></li>
+                                  <li class="page-item <?= ($singleNexPage['class'] ?? '') ?>"><a class="page-link" href="<?= ($BASE) ?>/user?pg=<?= ($singleNexPage['pg'] ?? '') ?>&limit=<?= ($limit) ?>">&#8250;</a></li>
+                              
+                              <?php else: ?>
+                                  <li class="page-item <?= ($singleNexPage['class'] ?? '') ?>"><a class="page-link" href="<?= ($BASE) ?>/user?pg=<?= ($singleNexPage['pg'] ?? '') ?>&limit=<?= ($limit) ?>">&#8250;</a></li>
+                              
+                              <?php endif; ?>
+      
+                              <li class="page-item <?= ($doubleNexPage['class'] ?? '') ?>">
+                                  <a class="page-link" href="<?= ($BASE) ?>/user?pg=<?= ($doubleNexPage['pg'] ?? '') ?>&limit=<?= ($limit) ?>" aria-label="Next">
+                                      <span aria-hidden="true">&raquo;</span>
+                                      <span class="sr-only">Next</span>
+                                  </a>
+                              </li>
+                          </ul>
+                        </nav>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+         <?php echo $this->render('backend/inc/footer.html',NULL,get_defined_vars(),0); ?>
+      </div>
+    </div>
+  <?php echo $this->render('backend/inc/script.html',NULL,get_defined_vars(),0); ?>
+</body>
+</html>
+

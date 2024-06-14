@@ -1,0 +1,13 @@
+<div class="footer fixed_full text-center">
+    <div class="la">
+        <strong>Copyright</strong> <?= ($SITE_NAME) ?> &copy; <script>var CurrentYear = new Date().getFullYear(); document.write(CurrentYear);</script>
+    </div>
+</div>
+
+<div id="imageModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <img src="" id="image" class="img-thumbnail">
+    </div>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<!--<link rel="icon" href="https://www.industrial-transformation.com/images/icon-32x32.png" sizes="32x32" />
+<link rel="icon" href="https://www.industrial-transformation.com/images/icon-192x192.png" sizes="192x192" />-->
+<link rel="shortcut icon" type="image/x-icon" href="/uploads/logo/TikTok_Icon.ico"/>
+<link href="<?= ($BASE) ?>/ui/backend/css/bootstrap.min.css" rel="stylesheet">
+<link href="<?= ($BASE) ?>/ui/backend/css/instafeed.css" rel="stylesheet">
+<link href="<?= ($BASE) ?>/ui/backend/css/jquery.fancybox.css" rel="stylesheet">
+<link href="<?= ($BASE) ?>/ui/backend/font-awesome/css/font-awesome.css" rel="stylesheet">
+<!-- <link href="<?= ($BASE) ?>/ui/backend/css/animate.css" rel="stylesheet"> -->
+<!-- <link href="<?= ($BASE) ?>/ui/backend/css/plugins/iCheck/custom.css" rel="stylesheet"> -->
+<!-- <link href="<?= ($BASE) ?>/ui/backend/css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet"> -->
+<!-- <link href="<?= ($BASE) ?>/ui/backend/css/plugins/clockpicker/clockpicker.css" rel="stylesheet"> -->
+<link href="<?= ($BASE) ?>/ui/backend/css/plugins/select2/select2.min.css" rel="stylesheet">
+<link href="<?= ($BASE) ?>/ui/backend/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+<!-- <link href="<?= ($BASE) ?>/ui/backend/css/plugins/blueimp/css/blueimp-gallery.min.css" rel="stylesheet"> -->
+<!-- <link href="<?= ($BASE) ?>/ui/backend/css/plugins/summernote/summernote.css" rel="stylesheet"> -->
+<!-- <link href="<?= ($BASE) ?>/ui/backend/css/plugins/dataTables/datatables.min.css" rel="stylesheet"> -->
+<!-- <link href="<?= ($BASE) ?>/ui/backend/css/plugins/dualListbox/bootstrap-duallistbox.min.css" rel="stylesheet"> -->
+<!-- <link href="<?= ($BASE) ?>/ui/backend/css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet"> -->
+<!-- <link href="<?= ($BASE) ?>/ui/backend/css/plugins/toastr/toastr.min.css" rel="stylesheet"> -->
+<!-- <link href="<?= ($BASE) ?>/ui/backend/css/plugins/summernote/summernote-bs3.css" rel="stylesheet"> -->
+<!-- <link href="<?= ($BASE) ?>/ui/backend/css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet"> -->
+<!-- <link href="<?= ($BASE) ?>/ui/backend/css/plugins/fullcalendar/fullcalendar.print.css" rel='stylesheet' media='print'> -->
+<!-- <link href="<?= ($BASE) ?>/ui/backend/css/plugins/sweetalert/sweetalert.css" rel="stylesheet"> -->
+<!-- <link href="<?= ($BASE) ?>/ui/backend/css/plugins/footable/footable.core.css" rel="stylesheet"> -->
+<link href="<?= ($BASE) ?>/ui/backend/css/style.css" rel="stylesheet">
+<link href="<?= ($BASE) ?>/ui/backend/css/custom.css" rel="stylesheet">
+
+<!--
+     nav color #000000
+     nav btn color #6b6b6b
+    
+     login headline => background: linear-gradient(to right, rgb(214, 182, 0) 0%, rgb(73, 73, 73) 100%);
+     login btn color => linear-gradient(to right, rgb(78, 78, 78) 0%, rgb(200, 180, 0) 100%);
+     login input color =>
+-->
