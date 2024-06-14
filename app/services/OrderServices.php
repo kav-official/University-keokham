@@ -11,81 +11,61 @@ class OrderServices extends BaseServiceReadBean
 		$this->tbl = "tblorder";
 		parent::__construct($db,$this->tbl);
 	}
+	function getData(){
+		$help    = new HelpFunctions();
+		$barcode = $this->f3->get('PARAMS.barcode');
+		$items   = $help->getSQL('SELECT * FROM tblproduct WHERE barcode =?',[$barcode]);
+		$arr     = [];
 
-	function add()
-	{
-		if ($_SERVER['REQUEST_METHOD'] == 'POST')
-		{
-			$image       = $this->f3->get('POST.image');
-			$barcode     = $this->f3->get('POST.barcode');
-			$product_no  = $this->f3->get('POST.product_no');
-			$category_id = $this->f3->get('POST.category_id');
-			$supplier_id = $this->f3->get('POST.supplier_id');
-			$name        = $this->f3->get('POST.name');
-			$qty         = $this->f3->get('POST.qty');
-			$base_price  = $this->f3->get('POST.base_price');
-			$sale_price  = $this->f3->get('POST.sale_price');
-			$date_expirt = $this->f3->get('POST.date_expirt');
-			
-			$this->image       = $image;
-			$this->barcode     = $barcode;
-			$this->product_no  = $product_no;
-			$this->category_id = $category_id;
-			$this->supplier_id = $supplier_id;
-			$this->name        = $name;
-			$this->qty         = $qty;
-			$this->base_price  = $base_price;
-			$this->sale_price  = $sale_price;
-			$this->date_expirt = $date_expirt;
-			$this->save();
-			$this->data = ['success' => true, 'message' =>$name.' ເພີມແລ້ວ'];
+		foreach ($items as $row) {
+			$arr[]=[
+				'product_no'  => $row['product_no'],
+				'name'        => $row['name'],
+				'qty'         => $row['qty'],
+				'base_price'  => $row['base_price'],
+				'sale_price'  => $row['sale_price'],
+				'date_expirt' => $row['date_expirt'],
+				'image' 	  => $row['image'],
+			];
 		}
-		if ($_SERVER['REQUEST_METHOD'] == 'PUT') 
-		{
-			$data = $this->f3->get('BODY');
-			parse_str($data, $post_vars);
-			$id          = $post_vars['id'];
-			$image       = $post_vars['image'];
-			$barcode     = $post_vars['barcode'];
-			$product_no  = $post_vars['product_no'];
-			$category_id = $post_vars['category_id'];
-			$supplier_id = $post_vars['supplier_id'];
-			$name        = $post_vars['name'];
-			$qty         = $post_vars['qty'];
-			$base_price  = $post_vars['base_price'];
-			$sale_price  = $post_vars['sale_price'];
-			$date_expirt = $post_vars['date_expirt'];
-			
-			$this->Svr              = $this->load(['id = ?',$id]);
-			$this->Svr->image       = $image;
-			$this->Svr->barcode     = $barcode;
-			$this->Svr->product_no  = $product_no;
-			$this->Svr->category_id = $category_id;
-			$this->Svr->supplier_id = $supplier_id;
-			$this->Svr->name        = $name;
-			$this->Svr->qty         = $qty;
-			$this->Svr->base_price  = $base_price;
-			$this->Svr->sale_price  = $sale_price;
-			$this->Svr->date_expirt = $date_expirt;
-			$this->Svr->update();
-			$this->data = ['success' => true, 'message' =>$name.' ແກ້ໄຂແລ້ວ'];
-		}
-		API::success($this->data);
+
+		API::success(['success'=>true,'data'=>$arr]);
 	}
+	function addOrder(){
+		$help    	= new HelpFunctions();
+		$product_no = $this->f3->get('PARAMS.product_no');
+		$qty		= $this->f3->get('PARAMS.qty');
+		$items   	= $help->getSQL('SELECT * FROM tblproduct WHERE product_no =?',[$product_no]);
+		$arr     	= [];
 
-		function getData(){
-			$help    = new HelpFunctions();
-			$barcode = $this->f3->get('PARAMS.barcode');
-			$items   = $help->getSQL('SELECT * FROM tblproduct WHERE barcode =?',[$barcode]);
-			$arr     = [];
+		$file_content = file_get_contents("uploads/order-bill.ini");
+		$split = explode("|", $file_content);
+		
+		// $handle = fopen('uploads/order-bill.ini','w');
+		// fwrite($handle,"2|".date('Y'));
+		$order_no = "OR-".date('Y') . '-'.$split[0];
+		
+		// $handle = fopen('uploads/order-bill.ini','w');
+		// fwrite($handle,($split[0]+1)."|".date('Y'));
+		// $order_no = substr(date('Y'), -2) . '-'.$split[0];
+		
 
-			foreach ($items as $value) {
-				$arr=[
-					'product_no' => $value['product_no'],
-					'name'       => $value['name'],
-				];
-			}
+		foreach ($items as $row) {
+			$this->order_no    = '90';
+			$this->product_no  = $row['product_no'];
+			$this->total_qty   = $qty;
+			$this->employee    = $this->f3->get('LOGON_USER_NAME');
+			$this->save();
 
-			API::success(['success'=>true,'data'=>$arr]);
+			$Svr = new OrderDetailServices($this->db);
+			$Svr->product_no  = $row['product_no'];
+			$Svr->qty         = $qty;
+			$Svr->base_price  = $row['base_price'];
+			$Svr->sale_price  = $row['sale_price'];
+			$Svr->save();
 		}
+		
+		
+		API::success(['success'=>true,'data'=>$arr,'no'=>$order_no]);
+	}
 }

@@ -10,7 +10,8 @@ class DataController {
         $this->db = DBConfig::config();
         $this->secur = new CustomSecurity();
         $this->secur->security();
-        $this->custom = new CustomFunctions();
-        $this->Svr  =  new RegisterMemberServices($this->db);
+        $this->custom  = new CustomFunctions();
+        $this->Svr     =  new OrderServices($this->db);
+        $this->Svrlist = new OrderListServices($this->db);
     }
 }

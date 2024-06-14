@@ -21,89 +21,78 @@
                         <a href="/">Dashboard</a>
                     </li>
                     <li class="breadcrumb-item active la">
-                        <strong>{{ @strAction }}</strong>
+                        <strong>ກວດຊອບສິນຄ້າ</strong>
                     </li>
                 </ol>
             </div>
             <div class="col-lg-2">
             </div>
         </div>
-
         <div class="wrapper wrapper-content">
           <div class="ibox float-e-margins" id="app">
             <div class="ibox-title la">
-                <h5>{{ @strAction }}</h5>
+                <h5>ກວດຊອບສິນຄ້າ</h5>
             </div>
             <div class="ibox-content">            
-                <form class="form-horizontal la">
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">ບາໂຄດ</label>
-                                <div class="col-sm-2" style="display: flex;">
-                                    <input name="barcode" type="text" v-model="filter" v-on:keyup.enter="getData" class="form-control barcode">
-                                </div>
-                                <label class="col-sm-6 control-label"></label>
-                            <label class="col-sm-2 control-label" style="text-decoration: underline;">OR-0011</label>
-                        </div>
-                
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">ຊື່ສິນຄ້າ</label>
-                            <div class="col-sm-2">
-                                <input name="name" type="text" class="form-control">
-                            </div>
-                            <label class="col-sm-1 control-label">ຈຳນວນ</label>
-                            <div class="col-sm-2">
-                                <input name="qty" type="text" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">ລາຄາຊື້</label>
-                            <div class="col-sm-2">
-                                <input name="base_price" type="text" class="form-control">
-                            </div>
-
-                            <label class="col-sm-1 control-label">ລາຄາຂ່າຍ</label>
-                            <div class="col-sm-2">
-                                <input name="sale_price" type="number" class="form-control">
-                            </div>
-
-                            <label class="col-sm-1 control-label">ວັນທີໝົດອາຍຸ</label>
-                            <div class="col-sm-2">
-                                <input name="date_expirt" type="number" class="form-control">
-                            </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label la">ບາໂຄດ</label>
+                        <div class="col-sm-2" style="display: flex;">
+                            <input name="barcode" type="text" v-model="filter" v-on:keyup.enter="getData" class="form-control barcode">
                         </div>
 
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <div class="col-sm-4 col-sm-offset-2">
-                            <button class="btn-sumit btn btn-primary la" type="button">ເພີ່ມ <i class="fa"></i></button>                                   
-                        </div>
+                    <label class="col-sm-1 control-label"></label>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover datatables-content" id="data-table">
+                        <thead>
+                            <tr>
+                            <th class="la">ຮູບສິນຄ້າ</th>
+                            <th class="la">ລະຫັດສິນຄ້າ</th>
+                            <th class="la">ຊື່ສິນຄ້າ</th>
+                            <th class="la">ຈຳນວນ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template  v-for="(item,index) in items">
+                                <tr>
+                                    <td>
+                                        <img :src="item.image" width="120" alt="item.name">
+                                    </td> 
+                                    <td>{-{{ item.product_no }}-}</td> 
+                                    <td>{-{{ item.name }}-}</td> 
+                                    <td>
+                                        <input type="text" :value="item.qty" v-on:keyup.enter="updateQTY(item.product_no)" class="form-control">
+                                    </td> 
+                                    
+                                </tr>
+                            </template>
+                        </tbody>
+                        </table>
                     </div>
-                </form>
-            </div>
-            <!-- list of data -->
-            <div class="ibox-content">
-              <div class="table-responsive">
-                <table class="table table-striped table-bordered table-hover datatables-content" id="data-table">
-                  <thead>
-                    <tr>
-                      <th class="la">ລະຫັດສິນຄ້າ</th>
-                      <th class="la">ຊື່ສິນຄ້າ</th>
-                      <th class="la">ຈຳນວນ</th>
-                      <th class="la">ລາຄາຂ່າຍ</th>
-                      <th class="la">ວັນທີໝົດອາຍຸ</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="item in items">
-                        <td>{-{{ item.product_no }}-}</td> 
-                        <td>{-{{ item.name }}-}</td> 
-                        <td>{-{{ item.qty }}-}</td> 
-                        <td>{-{{ item.sale_price }}-}</td> 
-                        <td>{-{{ item.date_expirt }}-}</td> 
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                </div>
+                <div class="form-group">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover datatables-content" id="data-table">
+                        <thead>
+                            <tr>
+                            <th class="la">ລຳດັບ</th>
+                            <th class="la">ລະຫັດສິນຄ້າ</th>
+                            <th class="la">ຊື່ສິນຄ້າ</th>
+                            <th class="la">ຈຳນວນ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template  v-for="(item,index) in tableData">
+                                <tr>
+                                    <td>{-{{ index+1 }}-}</td> 
+                                    <td>{-{{ item.product_no }}-}</td> 
+                                    <td>{-{{ item.name }}-}</td> 
+                                    <td>{-{{ item.qty }}-}</td> 
+                                </tr>
+                            </template>
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -116,7 +105,8 @@
         el:'#app',
         data:{
             filter:'',
-            items:[]
+            items:[],
+            tableData:[],
         },
         mounted(){
             // this.getData();
@@ -127,13 +117,25 @@
                 .then((res)=>{
                     var data = res.data;
                     if(data.success){
-                        this.items = data;
-                        console.log(this.items);
+                        this.items = data.data;
                     }else{
                         console.log('fail response data');
                     }
                 })
             },
+         updateQTY:function(product_no){
+            const qty = event.target.value;
+            axios.post('{{ @BASE }}/order/update/'+product_no+'/'+qty)
+            .then((res)=>{
+                var data = res.data;
+                if(data.success){
+                    this.tableData = data.data;
+                    alert(data.no);
+                }else{
+                    console.log('fail response data');
+                }
+            })
+         }
         }
     })
 </script>

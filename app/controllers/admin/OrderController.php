@@ -12,6 +12,6 @@ class OrderController extends ActionController {
         $this->custom = new CustomFunctions();
 
         $this->f3->set('custom',$this->custom);
-	    parent::__construct('OrderServices', 'backend/order.html', 'order', 'order', 'ສິນຄ້າ');
+	    parent::__construct('OrderServices', 'backend/order.html', 'order', 'order', 'ກວດຊອບ');
     }
 }

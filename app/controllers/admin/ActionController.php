@@ -157,4 +157,8 @@ class ActionController
 	{
 		$this->Svr->getData();
 	}
+	public function addOrder()
+	{
+		$this->Svr->addOrder();
+	}
 }
