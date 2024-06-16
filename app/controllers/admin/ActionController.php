@@ -161,4 +161,24 @@ class ActionController
 	{
 		$this->Svr->addOrder();
 	}
+	public function updateOrderBill()
+	{
+		$this->Svr->updateBill();
+	}
+	public function importData()
+	{
+		$this->Svr->getData();
+	}
+	public function updateProductQTY()
+	{
+		$this->Svr->updateQTY();
+	}
+	public function deleteOrder()
+	{
+		$this->Svr->deleteOrder();
+	}
+	public function storeSale()
+	{
+		$this->Svr->addSale();
+	}
 }

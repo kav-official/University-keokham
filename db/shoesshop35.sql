@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 14, 2024 at 11:16 AM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.0.25
+-- Generation Time: Jun 16, 2024 at 08:12 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -49,7 +49,11 @@ INSERT INTO `tblaccesslog` (`id`, `user_id`, `type`, `ip_address`, `login_succes
 (6, 1, 'admin', '::1', 1, NULL),
 (7, 1, 'admin', '::1', 1, NULL),
 (8, 1, 'admin', '::1', 1, NULL),
-(9, 1, 'admin', '::1', 1, NULL);
+(9, 1, 'admin', '::1', 1, NULL),
+(10, 1, 'admin', '::1', 1, NULL),
+(11, 1, 'admin', '::1', 1, NULL),
+(12, 1, 'admin', '::1', 1, NULL),
+(13, 1, 'admin', '::1', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -80,11 +84,21 @@ INSERT INTO `tblcategory` (`id`, `name`, `created_at`) VALUES
 
 CREATE TABLE `tblimport` (
   `id` int(11) NOT NULL,
-  `employee_id` int(11) NOT NULL,
-  `date` date NOT NULL,
+  `product_no` varchar(100) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `order_no` varchar(50) NOT NULL,
+  `employee` varchar(100) NOT NULL,
   `total_qty` int(11) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tblimport`
+--
+
+INSERT INTO `tblimport` (`id`, `product_no`, `product_name`, `order_no`, `employee`, `total_qty`, `created_at`) VALUES
+(1, 'P002', 'Droker', 'MT-24-38', 'ka', 580, '2024-06-15 11:31:02'),
+(2, 'P001', 'tiger headb 2', 'MT-24-26', 'ka', 250, '2024-06-15 11:44:41');
 
 -- --------------------------------------------------------
 
@@ -97,7 +111,6 @@ CREATE TABLE `tblimportdetail` (
   `order_id` int(11) NOT NULL,
   `product_no` varchar(50) NOT NULL,
   `qty` int(11) NOT NULL,
-  `price` decimal(10,2) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -109,7 +122,7 @@ CREATE TABLE `tblimportdetail` (
 
 CREATE TABLE `tblorder` (
   `id` int(11) NOT NULL,
-  `order_no` varchar(20) NOT NULL,
+  `order_no` varchar(50) NOT NULL,
   `product_no` varchar(50) NOT NULL,
   `date` date NOT NULL DEFAULT current_timestamp(),
   `total_qty` int(11) NOT NULL,
@@ -123,15 +136,8 @@ CREATE TABLE `tblorder` (
 --
 
 INSERT INTO `tblorder` (`id`, `order_no`, `product_no`, `date`, `total_qty`, `employee`, `status`, `created_at`) VALUES
-(8, '24-2', 'P002', '2024-06-14', 90, 'ka', 0, '2024-06-14 16:01:37'),
-(9, '24-2', 'P001', '2024-06-14', 90, 'ka', 0, '2024-06-14 16:01:59'),
-(10, '24-2', 'P001', '2024-06-14', 880, 'ka', 0, '2024-06-14 16:02:25'),
-(11, '24-3', 'P001', '2024-06-14', 200, 'ka', 0, '2024-06-14 16:03:26'),
-(12, '24-4', 'P002', '2024-06-14', 99, 'ka', 0, '2024-06-14 16:04:01'),
-(13, '90', 'P002', '2024-06-14', 90, 'ka', 0, '2024-06-14 16:13:02'),
-(14, '90', 'P002', '2024-06-14', 90, 'ka', 0, '2024-06-14 16:13:49'),
-(15, '90', 'P002', '2024-06-14', 1290, 'ka', 0, '2024-06-14 16:14:19'),
-(16, '90', 'P002', '2024-06-14', 90, 'ka', 0, '2024-06-14 16:14:53');
+(42, 'MT-24-38', 'P002', '2024-06-15', 580, 'ka', 0, '2024-06-15 22:00:38'),
+(43, 'MT-24-38', 'P001', '2024-06-15', 580, 'ka', 0, '2024-06-15 22:01:25');
 
 -- --------------------------------------------------------
 
@@ -147,21 +153,6 @@ CREATE TABLE `tblorderdetail` (
   `sale_price` decimal(10,2) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tblorderdetail`
---
-
-INSERT INTO `tblorderdetail` (`id`, `product_no`, `qty`, `base_price`, `sale_price`, `created_at`) VALUES
-(7, 'P002', 90, '12000.00', '25000.00', '2024-06-14 16:01:37'),
-(8, 'P001', 90, '7000.00', '8000.00', '2024-06-14 16:02:00'),
-(9, 'P001', 880, '7000.00', '8000.00', '2024-06-14 16:02:25'),
-(10, 'P001', 200, '7000.00', '8000.00', '2024-06-14 16:03:26'),
-(11, 'P002', 99, '12000.00', '25000.00', '2024-06-14 16:04:01'),
-(12, 'P002', 90, '12000.00', '25000.00', '2024-06-14 16:13:03'),
-(13, 'P002', 90, '12000.00', '25000.00', '2024-06-14 16:13:49'),
-(14, 'P002', 1290, '12000.00', '25000.00', '2024-06-14 16:14:19'),
-(15, 'P002', 90, '12000.00', '25000.00', '2024-06-14 16:14:54');
 
 -- --------------------------------------------------------
 
@@ -190,8 +181,8 @@ CREATE TABLE `tblproduct` (
 --
 
 INSERT INTO `tblproduct` (`id`, `barcode`, `product_no`, `image`, `name`, `qty`, `base_price`, `sale_price`, `date_expirt`, `category_id`, `supplier_id`, `status`, `created_at`) VALUES
-(3, 345, 'P001', 'http://localhost:81/university/keokham/uploads/image/e2b0a89e4624721e2.jpeg', 'tiger headb 2', 200, 7000, 8000, '2027-06-10', 4, 2, 1, '2024-06-10 20:19:01'),
-(4, 2147483647, 'P002', 'http://localhost:81/university/keokham/uploads/image/67ef7968e12bb8c2c.jpeg', 'Droker', 12, 12000, 25000, '2024-06-20', 3, 2, 1, '2024-06-14 15:18:23');
+(3, 345, 'P001', 'http://localhost/university/keokham/uploads/image/e2b0a89e4624721e2.jpeg', 'tiger headb 2', 250, 7000, 8000, '2027-06-10', 4, 2, 1, '2024-06-10 20:19:01'),
+(4, 123, 'P002', 'http://localhost/university/keokham/uploads/image/67ef7968e12bb8c2c.jpeg', 'Droker', 580, 12000, 25000, '2024-06-20', 3, 2, 1, '2024-06-14 15:18:23');
 
 -- --------------------------------------------------------
 
@@ -202,14 +193,46 @@ INSERT INTO `tblproduct` (`id`, `barcode`, `product_no`, `image`, `name`, `qty`,
 CREATE TABLE `tblsale` (
   `id` int(11) NOT NULL,
   `bill_no` varchar(50) NOT NULL,
-  `barcode` int(11) NOT NULL,
-  `product_name` varchar(100) NOT NULL,
-  `qty` int(11) NOT NULL,
   `total_amount` decimal(10,2) NOT NULL,
-  `payment_type` int(1) NOT NULL,
+  `payment_type` varchar(10) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tblsale`
+--
+
+INSERT INTO `tblsale` (`id`, `bill_no`, `total_amount`, `payment_type`, `status`, `created_at`) VALUES
+(4, 'IV-24-5', 91000.00, 'Cash', 0, '2024-06-16 12:39:31'),
+(5, 'IV-24-6', 75000.00, 'Cash', 0, '2024-06-16 12:57:35');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tblsaledetail`
+--
+
+CREATE TABLE `tblsaledetail` (
+  `id` int(11) NOT NULL,
+  `sale_id` int(11) NOT NULL,
+  `bill_no` varchar(50) NOT NULL,
+  `category` varchar(100) NOT NULL,
+  `product_name` varchar(100) NOT NULL,
+  `barcode` int(20) NOT NULL,
+  `qty` int(11) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tblsaledetail`
+--
+
+INSERT INTO `tblsaledetail` (`id`, `sale_id`, `bill_no`, `category`, `product_name`, `barcode`, `qty`, `price`, `created_at`) VALUES
+(6, 4, 'IV-24-5', 'Female', 'Droker', 123, 3, 25000.00, '2024-06-16 12:39:31'),
+(7, 4, 'IV-24-5', 'Kide', 'tiger headb 2', 345, 2, 8000.00, '2024-06-16 12:39:31'),
+(8, 5, 'IV-24-6', 'Female', 'Droker', 123, 3, 25000.00, '2024-06-16 12:57:35');
 
 -- --------------------------------------------------------
 
@@ -220,7 +243,7 @@ CREATE TABLE `tblsale` (
 CREATE TABLE `tblsupplyer` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `created_at` datetime NOT NULL
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -254,7 +277,7 @@ CREATE TABLE `tbluser` (
 --
 
 INSERT INTO `tbluser` (`id`, `full_name`, `email`, `password`, `role`, `active`, `login_date`, `created_at`) VALUES
-(1, 'ka', 'ka', '$2y$12$XWOJeI8EUqpRUgQQk5o0z.3Uj2d5PzKlyJR/J8fUtUaw8tta1Dr3W', 'admin', 1, 1718347316, 12345678);
+(1, 'ka', 'ka', '$2y$12$XWOJeI8EUqpRUgQQk5o0z.3Uj2d5PzKlyJR/J8fUtUaw8tta1Dr3W', 'admin', 1, 1718500490, 12345678);
 
 --
 -- Indexes for dumped tables
@@ -310,6 +333,12 @@ ALTER TABLE `tblsale`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tblsaledetail`
+--
+ALTER TABLE `tblsaledetail`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tblsupplyer`
 --
 ALTER TABLE `tblsupplyer`
@@ -329,7 +358,7 @@ ALTER TABLE `tbluser`
 -- AUTO_INCREMENT for table `tblaccesslog`
 --
 ALTER TABLE `tblaccesslog`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `tblcategory`
@@ -341,7 +370,7 @@ ALTER TABLE `tblcategory`
 -- AUTO_INCREMENT for table `tblimport`
 --
 ALTER TABLE `tblimport`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tblimportdetail`
@@ -353,13 +382,13 @@ ALTER TABLE `tblimportdetail`
 -- AUTO_INCREMENT for table `tblorder`
 --
 ALTER TABLE `tblorder`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `tblorderdetail`
 --
 ALTER TABLE `tblorderdetail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `tblproduct`
@@ -371,7 +400,13 @@ ALTER TABLE `tblproduct`
 -- AUTO_INCREMENT for table `tblsale`
 --
 ALTER TABLE `tblsale`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `tblsaledetail`
+--
+ALTER TABLE `tblsaledetail`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tblsupplyer`

@@ -36,17 +36,17 @@
               </div>
             <div class="ibox-content">
               <div class="ibox-title text-right la">
-                <a href="{{ @BASE }}/supplier/edit" class="btn btn-success">ເພີມໃໝ່</a>
+                <a href="{{ @BASE }}/order/edit" class="btn btn-success">ສັ່ງຊີ້ໃໝ່</a>
               </div>
               <div class="table-responsive">
                 <table class="table table-striped table-bordered table-hover datatables-content">
                   <thead>
                     <tr>
                       <th class="la">ລຳດັບ</th>
+                      <th class="la">ຊື່ພະນັກງານ</th>
+                      <th class="la">ລະຫັດໃບບິນ</th>
                       <th class="la">ລະຫັດສິນຄ້າ</th>
-                      <th class="la">ຊື່ສິນຄ້າ</th>
-                      <th class="la">ພະນັກງານ</th>
-                      <th class="la">ຈຳນວນນຳເຂົ້າສາງ</th>
+                      <th class="la">ຈຳນວນ</th>
                       <th class="la">ວັນທີ</th>
                     </tr>
                   </thead>
@@ -54,11 +54,11 @@
                   <repeat group="{{ @items }}" counter="{{ @ctr }}" value="{{ @row }}">
                     <tr id="item-{{ @row.id  }}">
                       <td>{{ @ctr  }} </td>
-                      <td>{{ @row.product_no  }} </td>
-                      <td>{{ @row.product_name  }} </td>
                       <td>{{ @row.employee  }} </td>
+                      <td>{{ @row.order_no  }} </td>
+                      <td>{{ @row.product_no  }} </td>
                       <td>{{ @row.total_qty  }} </td>
-                      <td>{{ date('d/m/Y H:i:s A', strtotime(@row.created_at)) }}</td>
+                      <td>{{ date('d/m/Y H:i:s A', strtotime(@row.date)) }}</td>
                     </tr>
                   </repeat>       
                   </tbody>
