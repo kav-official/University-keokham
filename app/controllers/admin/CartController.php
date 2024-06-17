@@ -17,8 +17,8 @@ class CartController
     }
 
     function addToCart() {
-        $help         = new HelpFunctions();
-        $barcode      = $this->f3->get('PARAMS.barcode');
+        $help    = new HelpFunctions();
+        $barcode = $this->f3->get('PARAMS.barcode');
 
         if(is_numeric($barcode)){
             $item = $help->getByOne('ProductServices',array('barcode = ?',$barcode));
@@ -27,9 +27,9 @@ class CartController
         }
 
         if($item != null){
-            $price      = $item->sale_price;
-            $qty        = 1;
-            $barcode    = $item->barcode;
+            $price   = $item->sale_price;
+            $qty     = 1;
+            $barcode = $item->barcode;
         }else{
             API::success(array('success' => false,'message'=>'ບໍພົບລະຫັດສິນຄ້ານີ້'));
         }
@@ -94,15 +94,8 @@ class CartController
                 $items = $Svr->getSQL('SELECT tblproduct.name as product_name,tblproduct.sale_price,tblcategory.name as cate_name
                 FROM tblproduct INNER JOIN tblcategory ON(tblproduct.category_id = tblcategory.id) WHERE tblproduct.barcode = ? ',array($key));
 
-                // $arrUnit  = array();
                 $base_qty = 1;
-                foreach($items as $Row){
-                    // $arrUnit[] = array('id' => $Row['id'], 'unit_name' => $Row['unit_name']);
-                    // if($arrPrdUnit[$key]  == $Row['id']){  
-                        // $base_qty    = $Row['base_qty'];
-                    //     $base_price  = $Row['price'];
-                    // }
-                }
+                foreach($items as $Row){}
 
                 $arr[] = array('barcode' => $key, 'product_name' => $Row['product_name'] ?? '-','cate_name' => $Row['cate_name'] ?? '-','qty' => $value, 'sale_price' => number_format($arrPrdPrice[$key]),'total_price' => number_format($value*$arrPrdPrice[$key]), 'action' => 'sell');
                 $total_amount += $value*$arrPrdPrice[$key];
@@ -129,40 +122,21 @@ class CartController
     }
 
     function removeCart(){
-        $barcode = $this->f3->get('PARAMS.barcode');
-        // $action = $this->f3->get('GET.action');
-        // if($action == 'sell')
-        // {
-            $arrPrdNo    = $this->f3->get('SESSION.ARR_PRD_NO');
-            $arrPrdPrice = $this->f3->get('SESSION.ARR_PRD_PRICE');
-            
-            unset($arrPrdNo[$barcode]);
-            unset($arrPrdPrice[$barcode]);
+        $barcode     = $this->f3->get('PARAMS.barcode');
+        $arrPrdNo    = $this->f3->get('SESSION.ARR_PRD_NO');
+        $arrPrdPrice = $this->f3->get('SESSION.ARR_PRD_PRICE');
+        
+        unset($arrPrdNo[$barcode]);
+        unset($arrPrdPrice[$barcode]);
 
-            if(count($arrPrdNo) > 0)
-            {
-                $this->f3->set('SESSION.ARR_PRD_NO',$arrPrdNo);
-                $this->f3->set('SESSION.ARR_PRD_PRICE',$arrPrdPrice);
-            } else {
-                $this->f3->clear('SESSION.ARR_PRD_NO');
-                $this->f3->clear('SESSION.ARR_PRD_PRICE');
-            }
-        // } else {
-        //     $arrPrdNo = $this->f3->get('SESSION.ARR_BONUS_PRD_NO');
-        //     $arrPrdUnit = $this->f3->get('SESSION.ARR_BONUS_PRD_UNIT');
-            
-        //     unset($arrPrdNo[$product_no]);
-        //     unset($arrPrdUnit[$product_no]);
-
-        //     if(count($arrPrdNo) > 0)
-        //     {
-        //         $this->f3->set('SESSION.ARR_BONUS_PRD_NO',$arrPrdNo);
-        //         $this->f3->set('SESSION.ARR_BONUS_PRD_UNIT',$arrPrdUnit);
-        //     } else {
-        //         $this->f3->clear('SESSION.ARR_BONUS_PRD_NO');
-        //         $this->f3->clear('SESSION.ARR_BONUS_PRD_UNIT');
-        //     }
-        // }
+        if(count($arrPrdNo) > 0)
+        {
+            $this->f3->set('SESSION.ARR_PRD_NO',$arrPrdNo);
+            $this->f3->set('SESSION.ARR_PRD_PRICE',$arrPrdPrice);
+        } else {
+            $this->f3->clear('SESSION.ARR_PRD_NO');
+            $this->f3->clear('SESSION.ARR_PRD_PRICE');
+        }
 
         $this->data = array('success' => true);
         API::success($this->data);

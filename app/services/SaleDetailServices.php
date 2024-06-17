@@ -2,8 +2,8 @@
 class SaleDetailServices extends BaseServiceReadBean
 {
 	private $f3;
-	private $data;
-	private $Svr;
+	private $data,$help;
+	private $Svr,$listSvr;
 	public $tbl;
 	function __construct($db)
 	{

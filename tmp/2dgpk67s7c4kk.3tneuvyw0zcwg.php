@@ -59,10 +59,10 @@
                  
             <?php endif; ?>
 
-            <li class="<?= ($nav=='report-invoice' ? 'active' : '') ?> || <?= ($nav=='report-member' ? 'active' : '') ?>">
+            <li class="<?= ($nav=='report-product' ? 'active' : '') ?> || <?= ($nav=='report-member' ? 'active' : '') ?>">
                 <a href="#"><i class="fa fa-bullhorn"></i> <span class="nav-label la">ການລາຍງານ</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    <li class="<?= ($subnav=='report-member' ? 'active' : '') ?> la"><a href="#">👤 ລາຍງານສິນຄ້າໃນສາງ</a></li>
+                    <li class="<?= ($subnav=='report-product' ? 'active' : '') ?> la"><a href="<?= ($BASE) ?>/report/product">👤 ລາຍງານສິນຄ້າໃນສາງ</a></li>
                     <li class="<?= ($subnav=='report-member' ? 'active' : '') ?> la"><a href="/demo/report-member">👥 ລາຍງານໝົດອາຍ</a></li>
                     <li class="<?= ($subnav=='report-invoice' ? 'active' : '') ?> la"><a href="/demo/report-invoice">💱  ລາຍງານການສັໍ່ງຊື້</a></li>
                     <li class="<?= ($subnav=='report-member' ? 'active' : '') ?> la"><a href="#">📪 ລາຍງານການຂາຍ</a></li>

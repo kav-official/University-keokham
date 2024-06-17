@@ -41,6 +41,7 @@ class SaleServices extends BaseServiceReadBean
 				 
                 $this->bill_no      = $bill_no;
                 $this->barcode      = $barcode;
+                $this->employee     = $this->f3->get('LOGON_USER_NAME');
                 $this->total_amount = str_replace(",","",$total_amount);
                 $this->payment_type = $payment_type;
                 $this->save();
@@ -64,7 +65,7 @@ class SaleServices extends BaseServiceReadBean
                 $this->f3->clear('SESSION.ARR_PRD_NO');
                 $this->f3->clear('SESSION.ARR_PRD_PRICE');
 
-                $this->data = ['success'=>true,'message'=>'ສັ່ງຊື້ສຳເລັດແລ້ວ'];
+                $this->data = ['success'=>true,'message'=>'ສັ່ງຊື້ສຳເລັດແລ້ວ','bill_no'=>$bill_no];
                 // $this->data = ['success'=>true,'message'=>$product_name];
 
             API::success($this->data);

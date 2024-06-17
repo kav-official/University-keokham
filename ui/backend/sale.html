@@ -113,18 +113,13 @@
         data:{
             barcode:'',
             items:[],
-            sale_qty:1,
             cart_count:0,
             total_amount:0,
-            order_no:'',
         },
         mounted(){
             this.onFocus();
             this.fetchCart();
             this.cartCount();
-            // this.customerData();
-            // this.fetchBill();
-            // this.setFocus();
         },
         methods:{
             onFocus:function() {
@@ -132,7 +127,6 @@
             },
 
             addCart:function(barcode){
-                // alert(90000);
                 axios.get('{{ @BASE }}/sale/add-to-cart/'+barcode)
                 .then((res)=>{
                     var data = res.data;
@@ -183,6 +177,10 @@
                         if(data.success){
                             Swal.fire('ຂາຍສຳເລັດ',data.message,'success');
                             this.fetchCart();
+                            setTimeout(()=>{
+                                window.location.href="{{@BASE}}/sale/bill/"+data.bill_no
+                            },2000)
+                            
                         }else{
                             Swal.fire('Error','Some thing went wrong!','error');
                         }
@@ -192,43 +190,6 @@
         }
     })
 </script>
- <script type="text/javascript">
-        $(document).ready(function(){
-            $("#viSible_bill_header").hide();
-        });
-        function show_bill_header(){
-            $("#viSible_bill_header").show();
-        }
-        function printDiv() 
-          {
-    
-            var data=document.getElementById("DivIdToPrint").innerHTML;
-            var myWindow = window.open('', 'Bill','');
-            myWindow.document.write('<html><head><title>Bill</title>');
-            var htmlHeader = '' + '<style type="text/css">' 
-              + 'table {' + 'font-family: "Phetsarath OT"; margin-top:7px;font-size:12px; border:1' 
-              +'}#header{border-collapse: collapse;width: 100%;}#header td, #header th {padding: 0px 3px 0px 3px;}#header th { padding-top: 12px;padding-bottom: 12px;text-align: left;}</style>';
-            var htmlContent = '' + '<style type="text/css">' 
-              + 'table {' + 'font-family: "Phetsarath OT"; margin-top:7px;font-size:12px' 
-              +'}#content{border-collapse: collapse;width: 100%;}#content td, #content th {padding: 0px 3px 0px 3px;}#content th { padding-top: 12px;padding-bottom: 12px;text-align: left;}</style>';
-            var htmlTable = '' + '<style type="text/css">' 
-              + 'table {' + 'font-family: "Phetsarath OT"; margin-top:7px;font-size:12px' 
-              +'}#table{border-collapse: collapse;width: 100%;}#table td, #table th {border: 1px solid #ddd;padding: 0px 3px 0px 3px;}#table th { padding-top: 12px;padding-bottom: 12px;text-align: left;}</style>';
-            myWindow.document.write('</head><body>');
-            myWindow.document.write(data);
-            myWindow.document.write('</body></html>');
-            myWindow.document.write(htmlHeader);
-            myWindow.document.write(htmlContent);
-            myWindow.document.write(htmlTable);
-            myWindow.document.close();
-
-            myWindow.onload=function(){
-                myWindow.focus();
-                myWindow.print();
-            };
-
-          }
-  </script>
 </body>
 </html>
 

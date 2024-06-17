@@ -3,32 +3,49 @@ use \Mpdf\Mpdf;
 class ExportController{
     private $f3,$Svr,$memSvr,$custom,$reSvr;
     function __construct(){
-        $this->f3       = Base::instance();
-        $this->db       = DBConfig::config();
-        $this->custom   = new CustomFunctions();
-        $this->Svr      = new InvoiceServices($this->db);
-        $this->memSvr   = new RegisterMemberServices($this->db);
+        $this->f3         = Base::instance();
+        $this->db         = DBConfig::config();
+        $this->custom     = new CustomFunctions();
+        $this->productSvr = new ProductServices($this->db);
     }
 
-    function memberPdf(){
+    function productPDF(){
+        $defaultConfig     = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+        $fontDirs          = $defaultConfig['fontDir'];
+
+        $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+        $fontData          = $defaultFontConfig['fontdata'];
+
         $mpdf = new \Mpdf\Mpdf([ 
+            'fontDir' => array_merge($fontDirs, [
+                __DIR__ . '../../../uploads/fonts',
+            ]),
+            'fontdata' => $fontData + [
+                'Noto' => [
+                    'R' => 'NotoSansLao_Condensed-Regular.ttf',
+                    'B' => 'NotoSansLao_Condensed-Bold.ttf',
+                ]
+            ],
             'mode' => 'utf-8',
             'format' => 'A4',
             'use_unicode' => true,
-            'default_font' => 'phetsarath OT']);
+            'default_font' => 'Noto'
+        ]);
 
-        $items = $this->memSvr->getAll([],[]);
+        $items = $this->productSvr->getSQL('SELECT tblproduct.*,tblcategory.name as category FROM tblproduct INNER JOIN tblcategory ON(tblproduct.category_id=tblcategory.id)',[]);
         $html = '<div style="text-align:center;"><h2>ລາຍງານຂໍ້ມູນຜູ້ໃຊ້ນ້ຳ</h2></div>';    
         $html .= '<table>
                     <thead>
                     <tr>
-                      <th>ລະຫັດກົງເຕີ</th>
-                      <th>ຊື່ຜູ້ໃຊ້ນ້ຳ</th>
-                      <th>ເລກທີບັດປະຈຳຕົວ/ສຳມະໂນຄົວ</th>
-                      <th>ເລກທີເຮືອນ</th>
-                      <th>ໜ່ວຍ</th>
-                      <th>ເບີໂທ</th>
-                      <th>ເບີ WhatsApp</th>
+                      <th class="la">ລະຫັດສິນຄ້າ</th>
+                      <th class="la">ປະເພດສິນຄ້າ</th>
+                      <th class="la">ຜູ້ສະໜອງ</th>
+                      <th class="la">ຊື່ສິນຄ້າ</th>
+                      <th class="la">ຈຳນວນ</th>
+                      <th class="la">ລາຄາຊື້</th>
+                      <th class="la">ລາຄາຂ່າຍ</th>
+                      <th class="la">ວັນທີໝົດອາຍຸ</th>
+                      <th class="la">ວັນທີສ້າງ</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -37,13 +54,15 @@ class ExportController{
             foreach ($items as $row) {
                 $html .= '
                 <tr>
-                      <td>'.$row['meter_id'].'</td>
-                      <td>'.$row['full_name'].'</td>
-                      <td>'.$row['Identification_card'].'</td>
-                      <td>'.$row['house_number'].'</td>
-                      <td>'.$row['unit'].'</td>
-                      <td>'.$row['phone'].'</td>
-                      <td>'.$row['whats_app'].'</td>
+                      <td>'.$row['product_no'].'</td>
+                      <td>'.$row['category_id'].'</td>
+                      <td>'.$row['supplier_id'].'</td>
+                      <td>'.$row['name'].'</td>
+                      <td>'.$row['qty'].'</td>
+                      <td>'.$row['base_price'].'</td>
+                      <td>'.$row['sale_price'].'</td>
+                      <td>'.$row['date_expirt'].'</td>
+                      <td>'.$row['created_at'].'</td>
                 </tr>  
                 ';
             }

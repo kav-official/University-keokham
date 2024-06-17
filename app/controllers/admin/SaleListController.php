@@ -11,6 +11,8 @@ class SaleListController extends BaseController {
         $this->secur = new CustomSecurity();
         $this->secur->security();
         $this->custom = new CustomFunctions();
+        $this->help = new HelpFunctions();
+        $this->f3->set('help',$this->help);
 	    parent::__construct('SaleServices', 'backend/sale-list.html', 'sale', 'sale-list', 'ຂາຍສີນຄ້າ', '', '', $this->f3->get('ITEM_PER_PAGE'));
     }
 }

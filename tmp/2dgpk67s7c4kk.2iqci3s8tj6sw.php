@@ -44,7 +44,9 @@
                     <tr>
                       <th class="la">ລຳດັບ</th>
                       <th class="la">ເລກບິນ</th>
+                      <th class="la">ພະນັກງານຂ່າຍ</th>
                       <th class="la">ຈຳນວນເງີນ</th>
+                      <th class="la">ຈ່າຍດ້ວຍ</th>
                       <th class="la">ວັນທີສ້າງ</th>
                     </tr>
                   </thead>
@@ -52,8 +54,17 @@
                   <?php $ctr=0; foreach (($items?:[]) as $row): $ctr++; ?>
                     <tr id="item-<?= ($row['id']) ?>">
                       <td><?= ($ctr) ?> </td>
-                      <td><?= ($row['bill_no']) ?> </td>
+                      <td>
+                        <a href="<?= ($BASE) ?>/sale/bill/<?= ($row['bill_no']) ?>"><?= ($row['bill_no']) ?></a>
+                      </td>
+                      <td><?= ($row['employee'] ?? '-') ?> </td>
                       <td><?= ($row['total_amount']) ?> </td>
+                      <td>
+                        <?php if ($row['payment_type'] == 'Cash'): ?>
+                          ເງີນສົດ
+                          <?php else: ?>One Pay
+                        <?php endif; ?>
+                      </td>
                       <td><?= (date('d/m/Y H:i:s A', strtotime($row['created_at']))) ?></td>
                     </tr>
                   <?php endforeach; ?>       

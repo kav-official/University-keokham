@@ -61,7 +61,7 @@
                                     <td>{{ item.product_no }}</td> 
                                     <td>{{ item.name }}</td> 
                                     <td>
-                                    <input type="text" :value="item.qty" v-on:keyup.enter="updateQTY(item.product_no)" class="form-control">
+                                    <input type="text" :value="item.qty" @keyup.enter="updateQTY(item.product_no)" class="form-control">
                                     </td> 
                                 </tr>
                             </template>
