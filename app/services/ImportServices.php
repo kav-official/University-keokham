@@ -76,7 +76,7 @@ class ImportServices extends BaseServiceReadBean
 
 		$checkProduct = $Svr->load(['product_no =?',$product_no]);
 		if($checkProduct){
-			$Svr->qty = $qty;
+			$Svr->qty += $qty;
 			$Svr->update();
 			$data = ['success'=>true,'message'=>'ນຳເຂົ້າສຳເລັດແລ້ວ'];
 		}else{

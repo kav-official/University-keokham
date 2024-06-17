@@ -43,6 +43,7 @@
                   <thead>
                     <tr>
                       <th class="la">ຮູບພາບ</th>
+                      <th class="la">ບາໂຄດ</th>
                       <th class="la">ລະຫັດສິນຄ້າ</th>
                       <th class="la">ປະເພດສິນຄ້າ</th>
                       <th class="la">ຜູ້ສະໜອງ</th>
@@ -67,9 +68,10 @@
                               
                           <?php endif; ?>
                       </td>
+                      <td><?= ($row['barcode']) ?> </td>
                       <td><?= ($row['product_no']) ?> </td>
-                      <td><?= ($row['category_id']) ?> </td>
-                      <td><?= ($row['supplier_id']) ?> </td>
+                      <td><?= ($arrCategory[$row['category_id']]) ?> </td>
+                      <td><?= ($arrSupplier[$row['supplier_id']]) ?> </td>
                       <td><?= ($row['name']) ?> </td>
                       <td><?= ($row['qty']) ?> </td>
                       <td><?= ($row['base_price']) ?> </td>

@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ @SITE_NAME }}</title>
     <include href="backend/inc/header.html" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css"/>
+
 </head>
 <body class="md-skin">
     <div id="wrapper">
@@ -41,10 +44,6 @@
                         <input type="hidden" name="id" value="{{@id}}">
                         <div class="col-sm-2" style="display: flex;">
                             <input name="barcode" v-model="barcode" type="text" ref="onFocus" @keyup="addCart(event.target.value)" class="form-control">
-
-                            <span class="col-sm-6 control-label">
-                                <button class="btn btn-info la" v-on:click="submitForm" type="button">ບັນທຶກການສັ່ງຊື້ <i class="fa fa-save"></i></button>
-                            </span>
                         </div>
                        
                         <div class="table-responsive">
@@ -83,22 +82,32 @@
                                             <input type="hidden"name="total_amount" v-bind:value="total_amount">
                                         </td>
                                     </tr>
-
-                                <div style="display: flex;">
-                                    <span class="col-sm-6 control-label"></span>
-                                    <span class="col-sm-1 control-label">
-                                        <input type="radio" id="Cash" checked value="Cash" name="payment_type">
-                                        <label for="Cash" class="la"> ຈ່າຍສົດ</label>
-                                    </span>
-                                    <span class="col-sm-2 control-label">
-                                        <input type="radio" id="One Pay" value="One Pay" name="payment_type">
-                                        <label for="One Pay">One Pay</label>
-                                    </span>
-                                </div>
-                            </tbody>
+                                </tbody>
                             </table>
                         </div>
                     </div>
+                   
+                     <div style="display: flex;">
+                        <span class="col-sm-1 control-label"></span>
+                        <div class="pretty p-default">
+                            <input type="checkbox" id="cash" name="cash" checked="true" value="Cash" />
+                            <div class="state p-success">
+                                <label class="la">ຈ່າຍສົດ</label>
+                            </div>
+                        </div>
+                        <!-- success -->
+                        <div class="pretty p-default">
+                            <input type="checkbox" id="onepay" name="onepay" value="OnePay"  />
+                            <div class="state p-success">
+                                <label>One Pay</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="control-label text-right">
+                        <button class="btn btn-info la" v-on:click="submitForm" type="button">ບັນທຶກການສັ່ງຊື້ <i class="fa fa-save"></i></button>
+                    </div>
+                    
                 </div>
             </form>
         </div>
@@ -107,6 +116,20 @@
  <include href="backend/inc/footer.html" />
 </div>
 <include href="backend/inc/script.html" />
+<script type="text/javascript">
+     $(document).ready(function() {
+        $('#onepay').change(function() {
+            if (this.checked) {
+                $('#cash').prop('checked', false);
+            }
+        });
+        $('#cash').change(function() {
+            if (this.checked) {
+                $('#onepay').prop('checked', false);
+            }
+        });
+    });
+</script>
 <script type="text/javascript">
     new Vue({
         el:'#app',

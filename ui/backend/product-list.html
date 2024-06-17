@@ -43,6 +43,7 @@
                   <thead>
                     <tr>
                       <th class="la">ຮູບພາບ</th>
+                      <th class="la">ບາໂຄດ</th>
                       <th class="la">ລະຫັດສິນຄ້າ</th>
                       <th class="la">ປະເພດສິນຄ້າ</th>
                       <th class="la">ຜູ້ສະໜອງ</th>
@@ -67,6 +68,7 @@
                               </true>
                           </check>
                       </td>
+                      <td>{{ @row.barcode  }} </td>
                       <td>{{ @row.product_no  }} </td>
                       <td>{{ @arrCategory[@row.category_id]  }} </td>
                       <td>{{ @arrSupplier[@row.supplier_id]  }} </td>

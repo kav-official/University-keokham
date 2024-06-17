@@ -38,7 +38,7 @@
                 <div class="form-group">
                     <label class="col-sm-1 control-label la">ບາໂຄດ</label>
                         <div class="col-sm-2" style="display: flex;">
-                            <input name="barcode" type="text" ref="onFocus" v-model="filter" v-on:keyup.enter="getData" class="form-control barcode">
+                            <input name="barcode" type="number" ref="onFocus" v-model="filter" v-on:keyup.enter="getData" class="form-control barcode">
                         </div>
 
                     <label class="col-sm-1 control-label"></label>

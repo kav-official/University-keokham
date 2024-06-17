@@ -8,7 +8,7 @@
 <script src="<?= ($BASE) ?>/ui/backend/js/axios.min.js"></script>
 <script src="<?= ($BASE) ?>/ui/backend/js/vue.min.js"></script>
 
-<!-- <script src="<?= ($BASE) ?>/ui/backend/js/jquery.validate.js"></script> -->
+<script src="<?= ($BASE) ?>/ui/backend/js/jquery.validate.js"></script>
 <script src="<?= ($BASE) ?>/ui/backend/js/jquery.form.min.js"></script>
 <script src="<?= ($BASE) ?>/ui/backend/js/jquery.fancybox.js"></script>
 <script src="<?= ($BASE) ?>/ui/backend/js/plugins/metisMenu/jquery.metisMenu.js"></script>

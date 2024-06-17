@@ -38,7 +38,7 @@
                 <div class="form-group">
                     <label class="col-sm-1 control-label la">ບາໂຄດ</label>
                         <div class="col-sm-2" style="display: flex;">
-                            <input name="barcode" type="text" ref="onFocus"v-on:keyup.enter="getData" class="form-control">
+                            <input name="barcode" type="number" ref="onFocus" @keyup.enter="getData" class="form-control">
                         </div>
 
                     <label class="col-sm-1 control-label"></label>
@@ -61,7 +61,7 @@
                                     <td>{-{{ item.product_no }}-}</td> 
                                     <td>{-{{ item.name }}-}</td> 
                                     <td>
-                                    <input type="text" :value="item.qty" @keyup.enter="updateQTY(item.product_no)" class="form-control">
+                                    <input type="number" :value="item.qty" @keyup.enter="updateQTY(item.product_no)" class="form-control">
                                     </td> 
                                 </tr>
                             </template>
@@ -146,6 +146,7 @@
             },
             updateQTY:function(product_no){
                 const qty = event.target.value;
+
                     axios.post('{{ @BASE }}/order/update/'+product_no+'/'+qty)
                     .then((res)=>{
                         var data = res.data;

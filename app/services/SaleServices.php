@@ -22,9 +22,16 @@ class SaleServices extends BaseServiceReadBean
             $qty          = $this->f3->get('POST.qty');
             $category     = $this->f3->get('POST.category');
             $price        = $this->f3->get('POST.price');
-            $payment_type = $this->f3->get('POST.payment_type');
             $total_amount = $this->f3->get('POST.total_amount');
-			
+            $cash         = $this->f3->get('POST.cash');
+            $onepay       = $this->f3->get('POST.onepay');
+            
+                if($cash){
+                    $payment_type = 'Cash';
+                }else if($onepay){
+                    $payment_type = 'Onepay';
+                }
+
                 $file_content = file_get_contents("uploads/bill.txt");
                 $split = explode(" ", $file_content);
                 if(date('Y') > $split[1]) 
