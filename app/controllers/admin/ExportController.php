@@ -10,30 +10,28 @@ class ExportController{
     }
 
     function productPDF(){
-        $defaultConfig     = (new \Mpdf\Config\ConfigVariables())->getDefaults();
-        $fontDirs          = $defaultConfig['fontDir'];
+        $help   = new HelpFunctions();
+        $cateArr=[];
+        $suppArr=[];
 
-        $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
-        $fontData          = $defaultFontConfig['fontdata'];
+        $category = $help->getSQL("SELECT * FROM tblcategory",[]);
+        foreach ($category as $value) {
+            $cateArr[$value['id']] = $value['name'];
+        }
+        $supplier = $help->getSQL("SELECT * FROM tblsupplyer",[]);
+        foreach ($supplier as $value) {
+            $suppArr[$value['id']] = $value['name'];
+        }
 
         $mpdf = new \Mpdf\Mpdf([ 
-            'fontDir' => array_merge($fontDirs, [
-                __DIR__ . '../../../uploads/fonts',
-            ]),
-            'fontdata' => $fontData + [
-                'Noto' => [
-                    'R' => 'NotoSansLao_Condensed-Regular.ttf',
-                    'B' => 'NotoSansLao_Condensed-Bold.ttf',
-                ]
-            ],
             'mode' => 'utf-8',
             'format' => 'A4',
             'use_unicode' => true,
             'default_font' => 'Noto'
         ]);
 
-        $items = $this->productSvr->getSQL('SELECT tblproduct.*,tblcategory.name as category FROM tblproduct INNER JOIN tblcategory ON(tblproduct.category_id=tblcategory.id)',[]);
-        $html = '<div style="text-align:center;"><h2>ລາຍງານຂໍ້ມູນຜູ້ໃຊ້ນ້ຳ</h2></div>';    
+        $items = $help->getSQL('SELECT tblproduct.*,tblcategory.name as category FROM tblproduct INNER JOIN tblcategory ON(tblproduct.category_id=tblcategory.id)',[]);
+        $html = '<div style="text-align:center;"><h2 style="font-family:Phetsarath OT">ລາຍງານຂໍ້ມູນສິນຄ້າ</h2></div>';    
         $html .= '<table>
                     <thead>
                     <tr>
@@ -55,8 +53,8 @@ class ExportController{
                 $html .= '
                 <tr>
                       <td>'.$row['product_no'].'</td>
-                      <td>'.$row['category_id'].'</td>
-                      <td>'.$row['supplier_id'].'</td>
+                      <td>'.$cateArr[$row['category_id']].'</td>
+                      <td>'.$suppArr[$row['supplier_id']].'</td>
                       <td>'.$row['name'].'</td>
                       <td>'.$row['qty'].'</td>
                       <td>'.$row['base_price'].'</td>
@@ -73,73 +71,34 @@ class ExportController{
         $mpdf->WriteHTML($html);
         $mpdf->Output('example.pdf', 'D');
     }
-    function billPdf(){
+    function expirtPDF(){
+        $help   = new HelpFunctions();
+        $cateArr = [];
+
+        $category = $help->getSQL("SELECT * FROM tblcategory",[]);
+        foreach ($category as $value) {
+            $cateArr[$value['id']] = $value['name'];
+        }
+
         $mpdf = new \Mpdf\Mpdf([ 
             'mode' => 'utf-8',
             'format' => 'A4',
             'use_unicode' => true,
             'default_font' => 'phetsarath OT']);
 
-        $items = $this->memSvr->getSQL("SELECT COUNT(tblinvoice.meter_id) AS month_count,SUM(meter_volume) AS total_volume,SUM(base_price) AS total_price,tblinvoice.meter_id,tblinvoice.date,tblinvoice.meter_volume,tblinvoice.base_price,tblregistermember.full_name 
-        FROM tblinvoice INNER JOIN tblregistermember
-        ON tblinvoice.member_id = tblregistermember.id
-        WHERE tblinvoice.payment_methode = ? GROUP BY tblinvoice.member_id",[3]);
+       $items = $help->getSQL('SELECT tblproduct.*,tblcategory.name as category FROM tblproduct INNER JOIN tblcategory ON(tblproduct.category_id=tblcategory.id) WHERE date_expirt <= ?',[date('Y-m-d')]);
 
-        // $html = '
-        // <!DOCTYPE html>
-        // <html lang="en">
-        // <head>
-        //   <title>Bootstrap Example</title>
-        //   <meta charset="utf-8">
-        //   <meta name="viewport" content="width=device-width, initial-scale=1">
-        //   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-        //   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
-        //   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-        //   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-        // </head>
-        // <body>
-        // <div class="container">
-        //   <h2>Bordered Table</h2>
-        //   <p>The .table-bordered class adds borders on all sides of the table and the cells:</p>            
-        //   <table class="table table-bordered">
-        //     <thead>
-        //       <tr>
-        //         <th>Firstname</th>
-        //         <th>Lastname</th>
-        //         <th>Email</th>
-        //       </tr>
-        //     </thead>
-        //     <tbody>
-        //       <tr>
-        //         <td>John</td>
-        //         <td>Doe</td>
-        //         <td>john@example.com</td>
-        //       </tr>
-        //       <tr>
-        //         <td>Mary</td>
-        //         <td>Moe</td>
-        //         <td>mary@example.com</td>
-        //       </tr>
-        //       <tr>
-        //         <td>July</td>
-        //         <td>Dooley</td>
-        //         <td>july@example.com</td>
-        //       </tr>
-        //     </tbody>
-        //   </table>
-        // </div>
-        // </body>
-        // </html>
-        // ';
-        $html = '<div style="text-align:center;"><h2>ລາຍງານຂໍ້ມູນຜູ້ໃຊ້ນ້ຳ</h2></div>';    
+        $html = '<div style="text-align:center;"><h2>ລາຍງານຂໍ້ມູນສິນຄ້າໝົດອາຍຸ</h2></div>';    
         $html .= '<table border="1" style="font-family: "Times New Roman", Times, serif;">
                     <thead>
                     <tr>
-                      <th>ລະຫັດກົງເຕີ</th>
-                      <th>ຊື່ຜູ້ໃຊ້ນ້ຳ</th>
-                      <th>ບໍລິມາດນ້ຳໃຊ້ m³</th>
-                      <th>ລວມຄ່ານ້ຳທັງໝົດ</th>
-                      <th>ຈຳນວນເດືອນທີຄ້າງຈ່າຍ</th>
+                      <th class="la">ລະຫັດສິນຄ້າ</th>
+                      <th class="la">ປະເພດສິນຄ້າ</th>
+                      <th class="la">ຊື່ສິນຄ້າ</th>
+                      <th class="la">ຈຳນວນ</th>
+                      <th class="la">ລາຄາຊື້</th>
+                      <th class="la">ລາຄາຂ່າຍ</th>
+                      <th class="la">ວັນທີໝົດອາຍຸ</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -148,11 +107,13 @@ class ExportController{
             foreach ($items as $row) {
                 $html .= '
                 <tr>
-                      <td>'.$row['meter_id'].'</td>
-                      <td>'.$row['full_name'].'</td>
-                      <td>'.$row['total_volume'].'</td>
-                      <td>'.$row['total_price'].'</td>
-                      <td>'.$row['month_count'].'</td>
+                    <td>'.$row['product_no'].'</td>
+                      <td>'.$cateArr[$row['category_id']].'</td>
+                      <td>'.$row['name'].'</td>
+                      <td>'.$row['qty'].'</td>
+                      <td>'.$row['base_price'].'</td>
+                      <td>'.$row['sale_price'].'</td>
+                      <td>'.date('d/m/Y',strtotime($row['date_expirt'])).'</td>
                 </tr>  
                 ';
             }
@@ -163,7 +124,61 @@ class ExportController{
         $mpdf->WriteHTML($html);
         $mpdf->Output('example.pdf', 'D');
     }
+    function orderPDF(){
+        $help   = new HelpFunctions();
+        $cateArr=[];
 
+        $category = $help->getSQL("SELECT * FROM tblcategory",[]);
+        foreach ($category as $value) {
+            $cateArr[$value['id']] = $value['name'];
+        }
+
+        $mpdf = new \Mpdf\Mpdf([ 
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'use_unicode' => true,
+            'default_font' => 'phetsarath OT']);
+
+       $items = $help->getSQL("SELECT tblproduct.*,tblorder.*,tblcategory.id as category_name FROM tblproduct INNER JOIN tblorder ON(tblproduct.product_no=tblorder.product_no) INNER JOIN tblcategory ON (tblproduct.category_id=tblcategory.id)",[]);
+
+        $html = '<div style="text-align:center;"><h2>ລາຍງານຂໍ້ມູນສັ່ງຊື້ສິນຄ້າ</h2></div>';    
+        $html .= '<table border="1" style="font-family: "Times New Roman", Times, serif;">
+                    <thead>
+                    <tr>
+                      <th class="la" style="font-family: Noto Sans Lao;">ເລກທີບິນສັ່ງຊຶ້</th>
+                      <th class="la" style="font-family: Noto Sans Lao;">ລະຫັດສິນຄ້າ</th>
+                      <th class="la" style="font-family: Noto Sans Lao;">ປະເພດສິນຄ້າ</th>
+                      <th class="la" style="font-family: Noto Sans Lao;">ຊື່ສິນຄ້າ</th>
+                      <th class="la" style="font-family: Noto Sans Lao;">ຈຳນວນ</th>
+                      <th class="la" style="font-family: Noto Sans Lao;">ລາຄາຊື້</th>
+                      <th class="la" style="font-family: Noto Sans Lao;">ລາຄາຂ່າຍ</th>
+                      <th class="la" style="font-family: Noto Sans Lao;">ວັນທີສັ່ງຊື້</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+            ';
+
+            foreach ($items as $row) {
+                $html .= '
+                <tr>
+                    <td>'.$row['order_no'].'</td>
+                    <td>'.$row['product_no'].'</td>
+                    <td>'.$cateArr[$row['category_id']].'</td>
+                    <td>'.$row['name'].'</td>
+                    <td>'.$row['total_qty'].'</td>
+                    <td>'.$row['base_price'].'</td>
+                    <td>'.$row['sale_price'].'</td>
+                    <td>'.date('d/m/Y',strtotime($row['date'])).'</td>
+                </tr>  
+                ';
+            }
+            $html .= '
+                  </tbody>
+                </table>';
+
+        $mpdf->WriteHTML($html);
+        $mpdf->Output('example.pdf', 'D');
+    }
     function memberCsv(){
         $items = $this->memSvr->getAll([],[]);
 
