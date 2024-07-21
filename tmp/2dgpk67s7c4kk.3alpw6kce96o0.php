@@ -61,7 +61,7 @@
                                     <td>{{ item.product_no }}</td> 
                                     <td>{{ item.name }}</td> 
                                     <td>
-                                    <input type="number" :value="item.qty" @keyup.enter="updateQTY(item.product_no)" class="form-control">
+                                    <input type="number" :value="item.qty" @keyup.enter="addOrder(item.product_no,event.target.value)" class="form-control">
                                     </td> 
                                 </tr>
                             </template>
@@ -69,45 +69,48 @@
                         </table>
                     </div>
                 </div>
-                <div class="form-group text-center">
-                <button class="btn btn-info la" v-on:click="updateBill" v-if="viSible">ບັນທຶກການສັ່ງຊື້ <i class="fa fa-save"></i></button>
-                </div>
-                <div class="form-group">
-                    <div id="DivIdToPrint">
-                        <div class="table-responsive">
-                            <div class="header-bill text-center la" id="viSible_bill_header">
-                                <div align="center" ><img src="<?= ($BASE) ?>/uploads/logo.png" width="100" style="font-family: Noto Sans Lao;" /></div>
-                                <h3 align="center" style="font-family: Noto Sans Lao;"><strong>ໃບແຈັງບິນສັ່ງຊື້</strong></h3>
-                                <h5 align="center" style="font-family: Noto Sans Lao;">ຮ້ານຂາຍເກີບຂອງຮ້ານ 35</h5>
-                            </div>
-
-                            <table class="table table-striped table-bordered table-hover datatables-content text-center">
-                            <thead>
-                                <tr>
-                                <th class="la">ລຳດັບ</th>
-                                <th class="la">ລະຫັດສິນຄ້າ</th>
-                                <th class="la">ຊື່ສິນຄ້າ</th>
-                                <th class="la">ຈຳນວນ</th>
-                                <th class="la">ຈັດການ</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <template  v-for="(item,index) in tableData">
+                <form id="order-form">
+                  <div class="form-group text-center">
+                  <button class="btn btn-info la" type="button" v-on:click="submitForm" v-if="viSible">ບັນທຶກການສັ່ງຊື້ <i class="fa fa-save"></i></button>
+                  </div>
+                    <div class="form-group">
+                        <div id="DivIdToPrint">
+                            <div class="table-responsive">
+                                <div class="header-bill text-center la" id="viSible_bill_header">
+                                    <div align="center" ><img src="<?= ($BASE) ?>/uploads/logo.png" width="100" style="font-family: Noto Sans Lao;" /></div>
+                                    <h3 align="center" style="font-family: Noto Sans Lao;"><strong>ໃບແຈັງບິນສັ່ງຊື້</strong></h3>
+                                    <h5 align="center" style="font-family: Noto Sans Lao;">ຮ້ານຂາຍເກີບຂອງຮ້ານ 35</h5>
+                                </div>
+                                <table class="table table-striped table-bordered table-hover datatables-content text-center">
+                                <thead>
                                     <tr>
-                                        <td>{{ index+1 }}</td> 
-                                        <td>{{ item.product_no }}</td> 
-                                        <td>{{ item.name }}</td> 
-                                        <td>{{ item.qty }}</td> 
-                                        <td>
-                                            <button type="button" itemid="item.product_no" class="btn btn-danger" v-on:click="deleteOrder(index,item.product_no)"> <i class="fa fa-trash"></i></button>
-                                        </td> 
+                                    <th class="la">ລຳດັບ</th>
+                                    <th class="la">ລະຫັດສິນຄ້າ</th>
+                                    <th class="la">ຊື່ສິນຄ້າ</th>
+                                    <th class="la">ຈຳນວນ</th>
+                                    <th class="la">ຈັດການ</th>
                                     </tr>
-                                </template>
-                            </tbody>
-                            </table>
+                                </thead>
+                                <tbody>
+                                    <template  v-for="(item,index) in tableData">
+                                        <tr>
+                                            <td>{{ index+1 }}</td> 
+                                            <input type="hidden"name="product_no[]" v-bind:value="item.product_no">
+                                            <input type="hidden"name="qty[]" v-bind:value="item.qty">
+                                            <td>{{ item.product_no }}</td> 
+                                            <td>{{ item.name }}</td> 
+                                            <td>{{ item.qty }}</td> 
+                                            <td>
+                                                <button type="button" class="btn btn-danger" v-on:click="remove(item.product_no)"> <i class="fa fa-trash"></i></button>
+                                            </td> 
+                                        </tr>
+                                    </template>
+                                </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -121,12 +124,13 @@
         data:{
             filter:'',
             items:[],
-            tableData:'',
+            tableData:[],
             viSible:true,
             order_no:'',
         },
         mounted(){
             this.onFocus();
+            this.fetchOrder();
         },
         methods:{
             onFocus:function() {
@@ -144,45 +148,50 @@
                     }
                 })
             },
-            updateQTY:function(product_no){
-                const qty = event.target.value;
-
-                    axios.post('<?= ($BASE) ?>/order/update/'+product_no+'/'+qty)
+            addOrder:function(product_no,qty){
+                    axios.get('<?= ($BASE) ?>/order/add/'+product_no+'/'+qty)
                     .then((res)=>{
                         var data = res.data;
                         if(data.success){
-                            this.tableData = data.data;
+                            this.fetchOrder();
                         }else{
                             alert('fail response data');
                         }
                     })
                 },
-            updateBill:function(){
-                axios.post('<?= ($BASE) ?>/order/update/bill')
-                .then((res)=>{
+        
+             fetchOrder:function(){
+                axios.get('<?= ($BASE) ?>/order/get/data')
+                .then(res => {
+                    var data       = res.data;
+                    this.tableData = data.data;
+                    // console.log(data);
+                })
+            },
+            remove:function(product_no){
+                axios.get('<?= ($BASE) ?>/order/remove/'+product_no)
+                .then(res => {
                     var data = res.data;
                     if(data.success){
-                        this.tableData = [];
-                        this.filter='';
-                        Swal.fire('ບັນທຶກການສັ່ງຊື້ສຳເລັດ',data.message,'success');
-                    }else{
-                        alert('fail response data');
+                        // console.log(data.data);
+                        this.fetchOrder();
                     }
                 })
             },
-            deleteOrder:function(index,product_no){
-                // var obj = $(this);
-                axios.delete('<?= ($BASE) ?>/order/delete/'+product_no)
-                .then((res)=>{
-                    var data = res.data;
-                    if(data.success == true){
-                         this.tableData.splice(index,1);
-                        Swal.fire('Completed',data.message,'success');
+            submitForm:function(){
+                axios.post('<?= ($BASE) ?>/order-action',$("#order-form").serialize())
+                .then((response)=>{
+                    var data = response.data;
+                    if(data.success){
+                        Swal.fire('ຂາຍສຳເລັດ',data.message,'success');
+                        setTimeout(()=>{
+                            this.fetchOrder();
+                        },1000)
                     }else{
-                        alert('fail response data');
+                        Swal.fire('Error','Some thing went wrong!','error');
                     }
                 })
-            }
+          },
         }
     })
 </script>

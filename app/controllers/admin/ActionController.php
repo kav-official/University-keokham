@@ -145,10 +145,6 @@ class ActionController
 	{
 		$this->Svr->add();
 	}
-	public function storeOrder()
-	{
-		$this->Svr->add();
-	}
 	public function storeImport()
 	{
 		$this->Svr->add();
@@ -180,5 +176,9 @@ class ActionController
 	public function storeSale()
 	{
 		$this->Svr->addSale();
+	}
+	public function storeOrder()
+	{
+		$this->Svr->addOrder();
 	}
 }

@@ -15,7 +15,97 @@ class CartController
         $this->secur->security($this->db);
         $this->help = new HelpFunctions();
     }
+// ||||||||||||||||||||||||||||||||||||||||||||||||||| START ORDER ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    function addOrder(){
+        $help       = new HelpFunctions();
+        $product_no = $this->f3->get('PARAMS.product_no');
+        $qty        = $this->f3->get('PARAMS.qty');
 
+        if($product_no){
+            $item = $help->getByOne('ProductServices',array('product_no = ?',$product_no));
+        } else {
+            $item = [];
+        }
+
+        if($item != null){
+            $qty        = $qty;
+            $product_no = $item->product_no;
+        }else{
+            API::success(array('success' => false,'message'=>'ບໍພົບລະຫັດສິນຄ້ານີ້'));
+        }
+
+        $action = 'all';
+        if($this->f3->get('SESSION.ARR_ORDER_NO') != null){
+            $arrPrdNo = $this->f3->get('SESSION.ARR_ORDER_NO');
+        } else {
+            $arrPrdNo = array();
+        }
+
+         if($product_no != null ){
+                $have = false;
+                foreach($arrPrdNo as $key => $value){
+                    if($key == $product_no){
+                        $have = true;
+                        break;
+                    }
+                }
+                if($have){
+                    if($arrPrdNo[$product_no] == 0){
+                        $arrPrdNo[$product_no] = 1;
+                    } else {
+                        if($action == 'update'){
+                            $arrPrdNo[$product_no] = $qty;
+                        } else {
+                            $arrPrdNo[$product_no] = $arrPrdNo[$product_no]+$qty > 0 ? $arrPrdNo[$product_no]+$qty : 1;
+                        }
+                    }
+                } else {
+                    $arrPrdNo[$product_no] = $qty;
+                }
+          
+            $this->f3->set('SESSION.ARR_ORDER_NO',$arrPrdNo);
+        }
+        API::success(array('success' => true));
+    }
+
+    function orderListData(){
+        $Svr       = new ProductServices($this->db);
+        $help      = new HelpFunctions();
+        $arrPrdNo  = $this->f3->get('SESSION.ARR_ORDER_NO');
+        $arr       = array();
+        $total_qty = 0;
+
+        if($arrPrdNo != null){
+            foreach($arrPrdNo as $key => $value){
+                $items = $Svr->getSQL('SELECT tblproduct.* FROM tblproduct WHERE product_no = ? ',array($key));
+                foreach($items as $Row){
+                    $arr[] = array('product_no' => $key,'name' => $Row['name'],'qty' => $value);
+                } 
+                
+            }
+        }
+        
+        API::success(array('success' => true,'data' =>$arr));
+    }
+
+    function removeOrder(){
+        $product_no = $this->f3->get('PARAMS.product_no');
+        $arrPrdNo   = $this->f3->get('SESSION.ARR_ORDER_NO');
+        
+        unset($arrPrdNo[$product_no]);
+
+        if(count($arrPrdNo) > 0)
+        {
+            $this->f3->set('SESSION.ARR_ORDER_NO',$arrPrdNo);
+        } else {
+            $this->f3->clear('SESSION.ARR_ORDER_NO');
+        }
+
+        $this->data = array('success' => true,'data'=>$product_no);
+        API::success($this->data);
+    }
+
+// ||||||||||||||||||||||||||||||||||||||||||||||||||| START SALE ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     function addToCart() {
         $help    = new HelpFunctions();
         $barcode = $this->f3->get('PARAMS.barcode');
@@ -76,7 +166,6 @@ class CartController
         }
         API::success(array('success' => true, 'cart_count' => count($arrPrdNo)));
     }
-
     function cartData(){
         $Svr         = new ProductServices($this->db);
         $help        = new HelpFunctions();
@@ -111,7 +200,6 @@ class CartController
         );
         API::success($this->data);
     }
-
     function cartCount(){
         $cart_count = 0;
         if($this->f3->get('SESSION.ARR_PRD_NO') != null)
@@ -120,7 +208,6 @@ class CartController
         }
         API::success(array('success' => true, 'cart_count' => $cart_count));
     }
-
     function removeCart(){
         $barcode     = $this->f3->get('PARAMS.barcode');
         $arrPrdNo    = $this->f3->get('SESSION.ARR_PRD_NO');

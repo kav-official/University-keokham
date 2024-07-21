@@ -24,9 +24,10 @@ class ProductListController extends BaseController {
         foreach ($supplier as $value) {
             $suppArr[$value['id']] = $value['name'];
         }
+
+        
         $this->f3->set('arrCategory',$cateArr);
         $this->f3->set('arrSupplier',$suppArr);
-
 	    parent::__construct('ProductServices', 'backend/product-list.html', 'product', 'product-list', 'ສິນຄ້າ', '', '', $this->f3->get('ITEM_PER_PAGE'));
     }
 }

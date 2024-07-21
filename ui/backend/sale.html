@@ -142,7 +142,6 @@
         mounted(){
             this.onFocus();
             this.fetchCart();
-            this.cartCount();
         },
         methods:{
             onFocus:function() {
@@ -169,20 +168,9 @@
                     var data            = res.data;
                     this.items          = data.data;
                     this.total_amount   = data.total_amount;
-                    var self            = this;
+                    // var self            = this;
                 })
             },
-
-	        cartCount:function(){
-                axios.get('{{ @BASE }}/admin/cart/count')
-                .then(res => {
-                    var data = res.data;
-                    if(data.success){
-                        this.cart_count = data.cart_count;
-                    }
-                })
-            },
-
             remove:function(barcode){
                 axios.get('{{ @BASE }}/admin/cart/remove/'+barcode)
                 .then(res => {
@@ -194,21 +182,21 @@
             },
 
             submitForm:function(){
-                    axios.post('{{ @BASE }}/admin/sale-action',$("#sale-form").serialize())
-                    .then((response)=>{
-                        var data = response.data;
-                        if(data.success){
-                            Swal.fire('ຂາຍສຳເລັດ',data.message,'success');
-                            this.fetchCart();
-                            setTimeout(()=>{
-                                window.location.href="{{@BASE}}/sale/bill/"+data.bill_no
-                            },2000)
-                            
-                        }else{
-                            Swal.fire('Error','Some thing went wrong!','error');
-                        }
-                    })
-                },
+                axios.post('{{ @BASE }}/admin/sale-action',$("#sale-form").serialize())
+                .then((response)=>{
+                    var data = response.data;
+                    if(data.success){
+                        Swal.fire('ຂາຍສຳເລັດ',data.message,'success');
+                        this.fetchCart();
+                        setTimeout(()=>{
+                            window.location.href="{{@BASE}}/sale/bill/"+data.bill_no
+                        },2000)
+                        
+                    }else{
+                        Swal.fire('Error','Some thing went wrong!','error');
+                    }
+                })
+            },
 
         }
     })

@@ -46,7 +46,7 @@
                 </div>
               </div>
               <div class="table-responsive">
-                <table class="table table-striped table-bordered table-hover datatables-content">
+                <table class="table table-striped table-hover datatables-content" id="print-table">
                   <thead>
                     <tr>
                       <th class="la">ລຳດັບ</th>
@@ -87,8 +87,8 @@
       </div>
     </div>
   <?php echo $this->render('backend/inc/script.html',NULL,get_defined_vars(),0); ?>
+
   <script type="text/javascript">
-  
      function printDiv() 
         {
           var data=document.getElementById("DivIdToPrint").innerHTML;
@@ -100,9 +100,10 @@
           var htmlContent = '' + '<style type="text/css">' 
             + 'table {' + 'font-family: "Phetsarath OT"; margin-top:7px;font-size:12px' 
             +'}#content{border-collapse: collapse;width: 100%;}#content td, #content th {padding: 0px 3px 0px 3px;}#content th { padding-top: 12px;padding-bottom: 12px;text-align: left;}</style>';
-          var htmlTable = '' + '<style type="text/css">' 
-            + 'table {' + 'font-family: "Phetsarath OT"; margin-top:7px;font-size:12px' 
-            +'}#table{border-collapse: collapse;width: 100%;}#table td, #table th {border: 1px solid #ddd;padding: 0px 3px 0px 3px;}#table th { padding-top: 12px;padding-bottom: 12px;text-align: left;}</style>';
+          // var htmlTable = '' + '<style type="text/css">' 
+            // + 'table {' + 'font-family: "Phetsarath OT"; margin-top:7px;font-size:12px' 
+            // +'}#table{border-collapse: collapse;width: 100%;}#table td, #table th {border: 1px solid #ddd;padding: 0px 3px 0px 3px;}#table th { padding-top: 12px;padding-bottom: 12px;text-align: left;}</style>';
+          var htmlTable = '' + '<style type="text/css">@font-face {font-family: "Phetsarath OT"; src: url("./../../uploads/fonts/Phetsarath OT.ttf");}table {font-family: "Phetsarath OT"; margin-top:7px;' +'}' + '#print-table,.print-table {border-collapse: collapse;width: 100%;}#print-table td, #print-table th,.print-table td,.print-table th {border: 1px solid #000000;padding-left: 3px;padding-right: 3px;}.bill-font{font-size: 17px;}</style>';
           myWindow.document.write('</head><body>');
           myWindow.document.write(data);
           myWindow.document.write('</body></html>');
@@ -115,7 +116,6 @@
               myWindow.focus();
               myWindow.print();
           };
-
         }
   </script>
 </body>

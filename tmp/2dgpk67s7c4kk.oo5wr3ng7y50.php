@@ -35,9 +35,20 @@
                   <h5><?= ($strAction) ?> (<?= ($entrycount) ?>)</h5>
               </div>
             <div class="ibox-content">
-              <div class="ibox-title text-right la">
-                <a href="<?= ($BASE) ?>/product/edit" class="btn btn-success">ເພີມໃໝ່</a>
-              </div>
+                <div class="ibox-title la">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control" name="filter">
+                    </div>
+                    <div class="col-sm-3">
+                      <a href="#" class="btn btn-success">ຄົ້ນຫາ <i class="fa fa-search"></i></a>
+                    </div>
+                    <div class="col-sm-3 text-right">
+                      <a href="<?= ($BASE) ?>/product/edit" class="btn btn-success">ເພີມໃໝ່</a>
+                    </div>
+                    
+                  </div>
+                </div>
               <div class="table-responsive">
                 <table class="table table-striped table-bordered table-hover datatables-content">
                   <thead>
