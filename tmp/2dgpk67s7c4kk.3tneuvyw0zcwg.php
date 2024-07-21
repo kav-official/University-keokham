@@ -54,7 +54,7 @@
             <?php if ($LOGON_USER_ROLE == 'admin'): ?>
                 
                     <li class="<?= ($nav=='sale' ? 'active' : '') ?>">
-                        <a href="<?= ($BASE) ?>/sale/edit"><i class="fa fa-print"></i> <span class="nav-label">ຂາຍສີນຄ້າ</span>  </a>
+                        <a href="<?= ($BASE) ?>/sale/edit"><i class="fa fa-money"></i> <span class="nav-label">ຂາຍສີນຄ້າ</span>  </a>
                     </li>
                  
             <?php endif; ?>

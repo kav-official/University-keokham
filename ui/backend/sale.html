@@ -34,16 +34,14 @@
         <div class="wrapper wrapper-content">
           <div class="ibox float-e-margins" id="app">
             <div class="ibox-title la" style="display: flex;justify-content: space-between;">
-                <h5><strong>ຂາຍສີນຄ້າ</strong></h5>
+                <h5><strong></strong></h5>
                 <a href="{{@BASE}}/sale"><h5><strong>ປະຫວັດການຂາຍ</strong></h5></a>
             </div>
             <form id="sale-form">  
             <div class="ibox-content">   
                     <div class="form-group">
-                        <label class="col-sm-1 control-label la">ບາໂຄດ</label>
-                        <input type="hidden" name="id" value="{{@id}}">
                         <div class="col-sm-2" style="display: flex;">
-                            <input name="barcode" v-model="barcode" type="text" ref="onFocus" @keyup="addCart(event.target.value)" class="form-control">
+                            <input name="barcode" style="height:45px;font-size: 25px; border-style: dashed;border-color: rgb(255, 18, 235);" v-model="barcode" type="text" ref="onFocus" @keyup="addCart(event.target.value)" class="form-control">
                         </div>
                        
                         <div class="table-responsive">
@@ -77,7 +75,7 @@
                                         <td class="text-center" style="cursor: pointer;" v-on:click="remove(item.barcode)"><i class="fa fa-trash"></i></td>
                                     </tr>
                                 </template>
-                                    <tr v-if="items.length > 0">
+                                    <tr>
                                         <td colspan="5" class="text-right">ລວມລາຄາ: {-{{ total_amount }}-}
                                             <input type="hidden"name="total_amount" v-bind:value="total_amount">
                                         </td>
@@ -90,29 +88,55 @@
                      <div style="display: flex;">
                         <span class="col-sm-1 control-label"></span>
                         <div class="pretty p-default">
-                            <input type="checkbox" id="cash" name="cash" checked="true" value="Cash" />
+                            <input type="checkbox" id="cash" name="cash" v-on:click="getIscash" checked="true" value="Cash" />
                             <div class="state p-success">
                                 <label class="la">ຈ່າຍສົດ</label>
                             </div>
                         </div>
-                        <!-- success -->
                         <div class="pretty p-default">
-                            <input type="checkbox" id="onepay" name="onepay" value="OnePay"  />
+                            <input type="checkbox" id="onepay" name="onepay" v-on:click="getIscash" value="OnePay"  />
                             <div class="state p-success">
                                 <label>One Pay</label>
                             </div>
                         </div>
                     </div>
-
-                    <div class="control-label text-right">
-                        <button class="btn btn-info la" v-on:click="submitForm" type="button">ບັນທຶກການສັ່ງຊື້ <i class="fa fa-save"></i></button>
+                    <div class="control-label text-right" v-if="items.length > 0">
+                        <button class="btn btn-info la" v-on:click="btnConfirmn" type="button">ຢືນຢັນການຂາຍ <i class="fa fa-save"></i></button>
                     </div>
                     
                 </div>
             </form>
+
+            <!-- Modal -->
+            <div class="modal fade" id="cashModal" tabindex="-1" role="dialog" aria-labelledby="cashModal" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title la" id="cashModal">ຈ່າຍສົດ</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <h1 class="la" style="color: blueviolet;">ຈຳນວນເງີນ: {-{{ total_amount }}-} ກີບ</h1>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" style="height: 70px;font-size: 40px;" @keyup="payCash" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <p style="font-size: 55px; color: rgb(170, 65, 4);" class="la">ເງີນຖອນລູກຄ້າ: {-{{ total_exchange }}-} ກີບ</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary la" data-dismiss="modal">ຍົກເລີກ</button>
+                        <button type="button" class="btn btn-primary la" v-on:click="btnConfirmSale">ບັນທຶກການຂາຍ</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
+
  <include href="backend/inc/footer.html" />
 </div>
 <include href="backend/inc/script.html" />
@@ -138,6 +162,9 @@
             items:[],
             cart_count:0,
             total_amount:0,
+            total_amount_exchange:0,
+            isCash:true,
+            total_exchange:0,
         },
         mounted(){
             this.onFocus();
@@ -147,7 +174,9 @@
             onFocus:function() {
                 this.$refs.onFocus.focus();
             },
-
+            focusPaycash:function(){
+                this.$refs.focusPaycash.focus();
+            },
             addCart:function(barcode){
                 axios.get('{{ @BASE }}/sale/add-to-cart/'+barcode)
                 .then((res)=>{
@@ -165,10 +194,10 @@
             fetchCart:function(){
                 axios.get('{{ @BASE }}/admin/cart')
                 .then(res => {
-                    var data            = res.data;
-                    this.items          = data.data;
-                    this.total_amount   = data.total_amount;
-                    // var self            = this;
+                    var data                   = res.data;
+                    this.items                 = data.data;
+                    this.total_amount          = data.total_amount;
+                    this.total_amount_exchange = data.total_amount_exchange;
                 })
             },
             remove:function(barcode){
@@ -180,7 +209,22 @@
                     }
                 })
             },
+            getIscash:function(){
+                this.isCash = !this.isCash;
+            },
+            payCash:function(){
+                this.total_exchange = (event.target.value - this.total_amount_exchange).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            },
 
+            btnConfirmn:function(){
+                if(this.isCash == true){
+                    $("#cashModal").modal('show');
+                }
+            },
+            btnConfirmSale:function(){
+                $("#cashModal").modal('hide');
+                this.submitForm();
+            },
             submitForm:function(){
                 axios.post('{{ @BASE }}/admin/sale-action',$("#sale-form").serialize())
                 .then((response)=>{

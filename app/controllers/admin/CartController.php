@@ -193,10 +193,11 @@ class CartController
         }
         
         $this->data = array(
-            'success' => true, 
-            'data' => $arr,
-            'total_amount' => number_format($total_amount,2), 
-            'total_qty' => $total_qty,
+            'success'               => true,
+            'data'                  => $arr,
+            'total_amount'          => number_format($total_amount),
+            'total_amount_exchange' => $total_amount,
+            'total_qty'             => $total_qty,
         );
         API::success($this->data);
     }
