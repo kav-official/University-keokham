@@ -49,19 +49,21 @@ class OrderServices extends BaseServiceReadBean
                     fwrite($handle,($split[0]+1)." ".$split[1]);
                     $order_no = "OR-".substr($split[1],-2) . '-'.$split[0];
                 }
-           
-				 
-               
-
-				// $sale_id = $this->get('_id');
+				
                 foreach($product_no as $key => $value)
                 {
-					$this->reset();
-					$this->order_no   = $order_no;
-					$this->product_no = $product_no[$key];
-					$this->total_qty  = $total_qty[$key];
-					$this->employee   = $this->f3->get('LOGON_USER_NAME');
-					$this->save();
+					$check = $this->load(['product_no =?',$product_no[$key]]);
+					if($check){
+						$this->total_qty  = $total_qty[$key];
+						$this->update();
+					}else{
+						$this->reset();
+						$this->order_no   = $order_no;
+						$this->product_no = $product_no[$key];
+						$this->total_qty  = $total_qty[$key];
+						$this->employee   = $this->f3->get('LOGON_USER_NAME');
+						$this->save();
+					}
                 }
 
                 $this->f3->clear('SESSION.ARR_ORDER_NO');
@@ -70,27 +72,4 @@ class OrderServices extends BaseServiceReadBean
             API::success($this->data);
         }
 	}
-
-	// function updateBill(){
-	// 	$file_content = file_get_contents("uploads/invoice.txt");
-	// 	$split = explode(" ", $file_content);
-	// 	if(date('Y') > $split[1]) 
-	// 	{
-	// 		$handle = fopen('uploads/invoice.txt','w');
-	// 		fwrite($handle,"1 ".date('Y'));
-	// 		$order_no = "MT-".substr(date('Y'),0) . '-1';
-	// 	} else {
-	// 		$handle = fopen('uploads/invoice.txt','w');
-	// 		fwrite($handle,($split[0]+1)." ".$split[1]);
-	// 		$order_no = "MT-".substr($split[1],-2) . '-'.$split[0];
-	// 	}
-	// 	API::success(['success'=>true]);
-	// }
-
-	// function deleteOrder(){
-	// 	$help    	= new HelpFunctions();
-	// 	$product_no = $this->f3->get('PARAMS.product_no');
-	// 	$this->db->exec("DELETE FROM tblorder WHERE product_no = ?",array($product_no));
-	// 	API::success(['success'=>true,'message'=>'Deleted']);
-	// }
 }
