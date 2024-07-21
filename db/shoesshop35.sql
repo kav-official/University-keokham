@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 19, 2024 at 11:50 AM
+-- Generation Time: Jul 22, 2024 at 12:36 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -57,7 +57,22 @@ INSERT INTO `tblaccesslog` (`id`, `user_id`, `type`, `ip_address`, `login_succes
 (14, 1, 'admin', '::1', 1, NULL),
 (15, 1, 'admin', '::1', 1, NULL),
 (16, 1, 'admin', '::1', 1, NULL),
-(17, 1, 'admin', '::1', 1, NULL);
+(17, 1, 'admin', '::1', 1, NULL),
+(18, 1, 'admin', '::1', 1, NULL),
+(19, 9, 'admin', '::1', 1, NULL),
+(20, 9, 'admin', '::1', 1, NULL),
+(21, 9, NULL, '::1', 1, 1719190567),
+(22, 9, 'admin', '::1', 1, NULL),
+(23, 9, 'admin', '::1', 1, NULL),
+(24, 9, 'admin', '::1', 0, NULL),
+(25, 9, 'admin', '::1', 1, NULL),
+(26, 9, 'admin', '::1', 1, NULL),
+(27, 9, 'admin', '::1', 1, NULL),
+(28, 9, 'admin', '::1', 1, NULL),
+(29, 9, 'admin', '::1', 1, NULL),
+(30, 9, 'admin', '::1', 1, NULL),
+(31, 9, 'admin', '::1', 0, NULL),
+(32, 9, 'admin', '::1', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -101,8 +116,7 @@ CREATE TABLE `tblimport` (
 --
 
 INSERT INTO `tblimport` (`id`, `product_no`, `product_name`, `order_no`, `employee`, `total_qty`, `created_at`) VALUES
-(1, 'P002', 'Droker', 'MT-24-44', 'ka', 20, '2024-06-15 11:31:02'),
-(2, 'P001', 'tiger headb 2', 'MT-24-43', 'ka', 10, '2024-06-15 11:44:41');
+(3, 'P002', 'Droker', 'OR-24-13', 'admin', 98, '2024-07-21 20:08:53');
 
 -- --------------------------------------------------------
 
@@ -140,8 +154,8 @@ CREATE TABLE `tblorder` (
 --
 
 INSERT INTO `tblorder` (`id`, `order_no`, `product_no`, `date`, `total_qty`, `employee`, `status`, `created_at`) VALUES
-(43, 'MT-24-43', 'P001', '2024-06-15', 10, 'ka', 0, '2024-06-15 22:01:25'),
-(45, 'MT-24-44', 'P002', '2024-06-17', 20, 'ka', 0, '2024-06-17 16:03:53');
+(61, 'OR-24-8', 'P001', '2024-07-21', 250, 'admin', 0, '2024-07-21 19:57:35'),
+(62, 'OR-24-13', 'P002', '2024-07-21', 98, 'admin', 0, '2024-07-21 20:08:29');
 
 -- --------------------------------------------------------
 
@@ -185,8 +199,8 @@ CREATE TABLE `tblproduct` (
 --
 
 INSERT INTO `tblproduct` (`id`, `barcode`, `product_no`, `image`, `name`, `qty`, `base_price`, `sale_price`, `date_expirt`, `category_id`, `supplier_id`, `status`, `created_at`) VALUES
-(3, 123, 'P001', 'http://localhost/university/keokham/uploads/image/e2b0a89e4624721e2.jpeg', 'tiger headb 2', 160, 7000, 8000, '2024-06-18', 4, 2, 1, '2024-06-10 20:19:01'),
-(4, 456, 'P002', 'http://localhost/university/keokham/uploads/image/67ef7968e12bb8c2c.jpeg', 'Droker', 600, 12000, 25000, '2024-06-20', 3, 2, 1, '2024-06-14 15:18:23');
+(3, 123, 'P001', 'http://localhost/university/keokham/uploads/image/e2b0a89e4624721e2.jpeg', 'tiger headb 2', 300, 7000, 8000, '2024-06-18', 4, 2, 1, '2024-06-10 20:19:01'),
+(4, 456, 'P002', 'http://localhost/university/keokham/uploads/image/67ef7968e12bb8c2c.jpeg', 'Droker', 748, 12000, 25000, '2024-06-20', 3, 2, 1, '2024-06-14 15:18:23');
 
 -- --------------------------------------------------------
 
@@ -209,9 +223,11 @@ CREATE TABLE `tblsale` (
 --
 
 INSERT INTO `tblsale` (`id`, `bill_no`, `employee`, `total_amount`, `payment_type`, `status`, `created_at`) VALUES
-(13, 'IV-24-17', 'ka', 16000.00, 'Cash', 0, '2024-06-17 17:08:11'),
-(14, 'IV-24-18', 'ka', 25000.00, 'Onepay', 0, '2024-06-17 17:08:25'),
-(15, 'IV-24-19', 'ka', 83000.00, 'Cash', 0, '2024-06-18 08:34:06');
+(18, 'IV-24-22', 'admin', 33000.00, 'Cash', 0, '2024-06-26 20:13:28'),
+(19, 'IV-24-23', 'admin', 16000.00, 'Cash', 0, '2024-07-22 04:50:57'),
+(20, 'IV-24-24', 'admin', 33000.00, 'Cash', 0, '2024-07-22 04:52:04'),
+(21, 'IV-24-25', 'admin', 66000.00, 'Cash', 0, '2024-07-22 04:53:06'),
+(22, 'IV-24-26', 'admin', 33000.00, 'Cash', 0, '2024-07-22 05:08:40');
 
 -- --------------------------------------------------------
 
@@ -241,7 +257,20 @@ INSERT INTO `tblsaledetail` (`id`, `sale_id`, `bill_no`, `category`, `product_na
 (20, 13, 'IV-24-17', 'Kide', 'tiger headb 2', 123, 2, 8000.00, '2024-06-17 17:08:11'),
 (21, 14, 'IV-24-18', 'Female', 'Droker', 456, 1, 25000.00, '2024-06-17 17:08:25'),
 (22, 15, 'IV-24-19', 'Kide', 'tiger headb 2', 123, 1, 8000.00, '2024-06-18 08:34:06'),
-(23, 15, 'IV-24-19', 'Female', 'Droker', 456, 3, 25000.00, '2024-06-18 08:34:06');
+(23, 15, 'IV-24-19', 'Female', 'Droker', 456, 3, 25000.00, '2024-06-18 08:34:06'),
+(24, 16, 'IV-24-20', 'Kide', 'tiger headb 2', 123, 2, 8000.00, '2024-06-19 16:56:25'),
+(25, 16, 'IV-24-20', 'Female', 'Droker', 456, 3, 25000.00, '2024-06-19 16:56:25'),
+(26, 17, 'IV-24-21', 'Kide', 'tiger headb 2', 123, 4, 8000.00, '2024-06-20 22:51:50'),
+(27, 17, 'IV-24-21', 'Female', 'Droker', 456, 2, 25000.00, '2024-06-20 22:51:50'),
+(28, 18, 'IV-24-22', 'Kide', 'tiger headb 2', 123, 1, 8000.00, '2024-06-26 20:13:28'),
+(29, 18, 'IV-24-22', 'Female', 'Droker', 456, 1, 25000.00, '2024-06-26 20:13:29'),
+(30, 19, 'IV-24-23', 'Kide', 'tiger headb 2', 123, 2, 8000.00, '2024-07-22 04:50:57'),
+(31, 20, 'IV-24-24', 'Female', 'Droker', 456, 1, 25000.00, '2024-07-22 04:52:04'),
+(32, 20, 'IV-24-24', 'Kide', 'tiger headb 2', 123, 1, 8000.00, '2024-07-22 04:52:04'),
+(33, 21, 'IV-24-25', 'Kide', 'tiger headb 2', 123, 2, 8000.00, '2024-07-22 04:53:06'),
+(34, 21, 'IV-24-25', 'Female', 'Droker', 456, 2, 25000.00, '2024-07-22 04:53:06'),
+(35, 22, 'IV-24-26', 'Kide', 'tiger headb 2', 123, 1, 8000.00, '2024-07-22 05:08:40'),
+(36, 22, 'IV-24-26', 'Female', 'Droker', 456, 1, 25000.00, '2024-07-22 05:08:40');
 
 -- --------------------------------------------------------
 
@@ -262,7 +291,7 @@ CREATE TABLE `tblsupplyer` (
 INSERT INTO `tblsupplyer` (`id`, `name`, `created_at`) VALUES
 (1, 'Beer lao', '0000-00-00 00:00:00'),
 (2, 'Tiger head', '0000-00-00 00:00:00'),
-(3, 'ISC Comunity', '0000-00-00 00:00:00');
+(3, 'ISC Comunity 2', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -286,7 +315,8 @@ CREATE TABLE `tbluser` (
 --
 
 INSERT INTO `tbluser` (`id`, `full_name`, `email`, `password`, `role`, `active`, `login_date`, `created_at`) VALUES
-(1, 'ka', 'ka', '$2y$12$XWOJeI8EUqpRUgQQk5o0z.3Uj2d5PzKlyJR/J8fUtUaw8tta1Dr3W', 'admin', 1, 1718674416, 12345678);
+(1, 'ka', 'ka', '$2y$12$XWOJeI8EUqpRUgQQk5o0z.3Uj2d5PzKlyJR/J8fUtUaw8tta1Dr3W', 'admin', 1, 1718790749, 12345678),
+(9, 'admin', 'admin', '$2y$12$1dpXJ8dfJvf0dNNQsuEDo.Poitp/dfsq.D1qR3STuM4jkbxVVRNFW', 'admin', 1, 1721596232, 1718790779);
 
 --
 -- Indexes for dumped tables
@@ -367,7 +397,7 @@ ALTER TABLE `tbluser`
 -- AUTO_INCREMENT for table `tblaccesslog`
 --
 ALTER TABLE `tblaccesslog`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `tblcategory`
@@ -379,7 +409,7 @@ ALTER TABLE `tblcategory`
 -- AUTO_INCREMENT for table `tblimport`
 --
 ALTER TABLE `tblimport`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tblimportdetail`
@@ -391,7 +421,7 @@ ALTER TABLE `tblimportdetail`
 -- AUTO_INCREMENT for table `tblorder`
 --
 ALTER TABLE `tblorder`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `tblorderdetail`
@@ -409,13 +439,13 @@ ALTER TABLE `tblproduct`
 -- AUTO_INCREMENT for table `tblsale`
 --
 ALTER TABLE `tblsale`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `tblsaledetail`
 --
 ALTER TABLE `tblsaledetail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `tblsupplyer`
@@ -427,7 +457,7 @@ ALTER TABLE `tblsupplyer`
 -- AUTO_INCREMENT for table `tbluser`
 --
 ALTER TABLE `tbluser`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
