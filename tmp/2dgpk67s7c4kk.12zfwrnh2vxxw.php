@@ -88,13 +88,13 @@
                      <div style="display: flex;">
                         <span class="col-sm-1 control-label"></span>
                         <div class="pretty p-default">
-                            <input type="checkbox" id="cash" name="cash" v-on:click="getIscash" checked="true" value="Cash" />
+                            <input type="checkbox" id="cash" name="cash" checked="true" value="Cash" />
                             <div class="state p-success">
                                 <label class="la">ຈ່າຍສົດ</label>
                             </div>
                         </div>
                         <div class="pretty p-default">
-                            <input type="checkbox" id="onepay" name="onepay" v-on:click="getIscash" value="OnePay"  />
+                            <input type="checkbox" id="onepay" name="onepay" value="OnePay"  />
                             <div class="state p-success">
                                 <label>One Pay</label>
                             </div>

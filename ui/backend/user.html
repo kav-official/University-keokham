@@ -61,12 +61,9 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">ບົດບາດ</label>
                         <div class="col-sm-10">
-                            <input type="radio" id="admin" name="role" value="admin">
-                            <label for="admin">ແອັດມິນ</label><br>
-                            <input type="radio" id="emp_meter" name="role" value="emp_meter">
-                            <label for="emp_meter">ພະນັກງານຈົດເລກກົງເຕີ</label><br>
-                            <input type="radio" id="emp_finance" name="role" value="emp_finance">
-                            <label for="emp_finance">ພະນັກງານເກັບເງິນ</label>
+                            <select name="role" class="form-control">
+                                {{ @custom->renderArraySelect(@arrRole,@item->role) }}
+                            </select>
                             <div class="error"></div>
                         </div>
                     </div>

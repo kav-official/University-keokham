@@ -2,6 +2,14 @@
 class CustomFunctions
 {
 
+	function role(){
+		$arr = [
+			'admin'=>'ແອດມີນ',
+			'staff'=>'ພະນັກງານຂາຍ'
+		];
+		return $arr;
+	}
+
 	function header_token(){
 		$authorizationHeader  = $_SERVER['HTTP_AUTHORIZATION'];
 		$headerParts          = explode(' ', $authorizationHeader);

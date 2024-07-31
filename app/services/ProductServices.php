@@ -26,7 +26,6 @@ class ProductServices extends BaseServiceReadBean
 			$qty         = $this->f3->get('POST.qty');
 			$base_price  = $this->f3->get('POST.base_price');
 			$sale_price  = $this->f3->get('POST.sale_price');
-			$date_expirt = $this->f3->get('POST.date_expirt');
 			
 			$this->image       = $image;
 			$this->barcode     = $barcode;
@@ -37,7 +36,6 @@ class ProductServices extends BaseServiceReadBean
 			$this->qty         = $qty;
 			$this->base_price  = $base_price;
 			$this->sale_price  = $sale_price;
-			$this->date_expirt = $date_expirt;
 			$this->save();
 			$this->data = ['success' => true, 'message' =>$name.' ເພີມແລ້ວ'];
 	
@@ -56,7 +54,6 @@ class ProductServices extends BaseServiceReadBean
 			$qty         = $post_vars['qty'];
 			$base_price  = $post_vars['base_price'];
 			$sale_price  = $post_vars['sale_price'];
-			$date_expirt = $post_vars['date_expirt'];
 			
 			$this->Svr              = $this->load(['id = ?',$id]);
 			$this->Svr->image       = $image;
@@ -68,7 +65,6 @@ class ProductServices extends BaseServiceReadBean
 			$this->Svr->qty         = $qty;
 			$this->Svr->base_price  = $base_price;
 			$this->Svr->sale_price  = $sale_price;
-			$this->Svr->date_expirt = $date_expirt;
 			$this->Svr->update();
 
 			$this->data = ['success' => true, 'message' =>$name.' ແກ້ໄຂແລ້ວ'];

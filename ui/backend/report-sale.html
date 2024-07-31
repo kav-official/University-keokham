@@ -35,9 +35,17 @@
                   <h5>{{ @strAction }} ({{ @entrycount }})</h5>
               </div>
             <div class="ibox-content">
-              <div class="ibox-title text-right la">
-                <a href="{{ @BASE }}/report-order/pdf" class="btn btn-success">PDF ລາຍງານ</a>
-              </div>
+                 <!-- <div class="ibox-title la"> -->
+                  <div class="row">
+                      <div class="ibox-title text-right la">
+                        <a href="{{ @BASE }}/user/edit" class="btn btn-success">ເພີມໃໝ່</a>
+                      </div>
+                    <div class="text-rigth">
+                      <a href="{{ @BASE }}/report-order/pdf" class="btn btn-success mr-3">PDF ລາຍງານ</a>
+                    </div>
+                  </div>
+
+                <!-- </div> -->
               <div class="table-responsive">
                 <table class="table table-striped table-bordered table-hover datatables-content">
                   <thead>

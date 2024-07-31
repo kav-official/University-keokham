@@ -119,13 +119,6 @@
                              <div class="error"></div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">ວັນທີໝົດອາຍຸ</label>
-                        <div class="col-sm-2">
-                            <input name="date_expirt" type="date" class="form-control" value="<?= ($item->date_expirt ?? '') ?>">
-                             <div class="error"></div>
-                        </div>
-                    </div>
                 
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">

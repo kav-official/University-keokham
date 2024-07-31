@@ -56,11 +56,8 @@
                         <?php if ($row['role'] == 'admin'): ?>
                           ແອັດມິນ
                         <?php endif; ?>
-                        <?php if ($row['role'] == 'emp_meter'): ?>
-                          ພະນັກງານຈົດເລກກົງເຕີ
-                        <?php endif; ?>
-                        <?php if ($row['role'] == 'emp_finance'): ?>
-                          ພະນັກງານເກັບເງິນ
+                        <?php if ($row['role'] == 'staff'): ?>
+                          ພະນັກງານຂາຍ
                         <?php endif; ?>
                       </td>
                       <td><?= ($row['full_name']) ?> </td>

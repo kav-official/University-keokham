@@ -13,7 +13,7 @@
         <div class="row border-bottom">
           <include href="backend/inc/topnav.html" />
         </div>
-        <div class="wrapper wrapper-content" id="app">
+        <div class="wrapper wrapper-content">
           <div class="row la">
             <div class="col-lg-12">
               <div class="ibox float-e-margins">
@@ -22,6 +22,38 @@
                 </div>
               </div>
              </div>
+
+            <div class="col-lg-3">
+              <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                  <h5><a href="javascript:void(0)" class="text-success">ຍອດຂາຍປະຈຳວັນ</a></h5>
+                </div>
+                <div class="ibox-content">
+                  <h1 class="no-margins text-info">{{ number_format(@total_amount_day) }} ກີບ</h1>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                  <h5><a href="javascript:void(0)" class="text-success">ຍອດຂາຍປະຈຳເດືອນ</a></h5>
+                </div>
+                <div class="ibox-content">
+                  <h1 class="no-margins text-success">{{ number_format(@total_amount_month) }} ກີບ</h1>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                  <h5><a href="javascript:void(0)" class="text-success">ຍອດຂາຍປະຈຳປີ</a></h5>
+                </div>
+                <div class="ibox-content">
+                  <h1 class="no-margins text-warning">{{ number_format(@total_amount_year) }} ກີບ</h1>
+                </div>
+              </div>
+            </div>
+
             </div>
           </div>
          </div>

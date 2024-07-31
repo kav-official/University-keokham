@@ -56,11 +56,8 @@
                         <check if="{{ @row.role == 'admin'  }}">
                           <true>ແອັດມິນ</true>
                         </check>
-                        <check if="{{ @row.role == 'emp_meter'  }}">
-                          <true>ພະນັກງານຈົດເລກກົງເຕີ</true>
-                        </check>
-                        <check if="{{ @row.role == 'emp_finance'  }}">
-                          <true>ພະນັກງານເກັບເງິນ</true>
+                        <check if="{{ @row.role == 'staff'  }}">
+                          <true>ພະນັກງານຂາຍ</true>
                         </check>
                       </td>
                       <td>{{ @row.full_name  }} </td>
