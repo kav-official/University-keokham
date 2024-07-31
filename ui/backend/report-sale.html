@@ -31,23 +31,23 @@
 
         <div class="wrapper wrapper-content">
           <div class="ibox float-e-margins">
-              <div class="ibox-title la">
-                  <h5>{{ @strAction }} ({{ @entrycount }})</h5>
-              </div>
+          
             <div class="ibox-content">
-                 <!-- <div class="ibox-title la"> -->
+                 <div class="ibox-title la">
                   <div class="row">
-                      <div class="ibox-title text-right la">
-                        <a href="{{ @BASE }}/user/edit" class="btn btn-success">ເພີມໃໝ່</a>
+                      <div class="ibox-title la">
+                        <a href="{{ @BASE }}/report/sale?filter=day" class="btn btn-info">ລາຍງານຍອດຂາຍປະຈຳວັນ</a>
+                        <a href="{{ @BASE }}/report/sale?filter=month" class="btn btn-primary">ລາຍງານຍອດຂາຍປະຈຳເດືອນ</a>
+                        <a href="{{ @BASE }}/report/sale?filter=year" class="btn btn-warning">ລາຍງານຍອດຂາຍປະຈຳປີ</a>
                       </div>
-                    <div class="text-rigth">
-                      <a href="{{ @BASE }}/report-order/pdf" class="btn btn-success mr-3">PDF ລາຍງານ</a>
+                    <div class="text-rigth la text-right">
+                      <a href="#" onclick="printDiv()" class="btn btn-success mr-3">Print ລາຍງານ</a>
                     </div>
                   </div>
 
-                <!-- </div> -->
-              <div class="table-responsive">
-                <table class="table table-striped table-bordered table-hover datatables-content">
+                </div>
+              <div class="table-responsive" id="DivIdToPrint">
+                <table class="table table-striped table-bordered table-hover datatables-content" id="print-table">
                   <thead>
                     <tr>
                       <th class="la" style="font-family: Noto Sans Lao;">ລຳດັບ</th>
@@ -81,6 +81,36 @@
       </div>
     </div>
   <include href="backend/inc/script.html" />
+    <script type="text/javascript">
+     function printDiv() 
+        {
+          var data=document.getElementById("DivIdToPrint").innerHTML;
+          var myWindow = window.open('', 'Bill','');
+          myWindow.document.write('<html><head><title>Bill</title>');
+          var htmlHeader = '' + '<style type="text/css">' 
+            + 'table {' + 'font-family: "Phetsarath OT"; margin-top:7px;font-size:12px; border:1' 
+            +'}#header{border-collapse: collapse;width: 100%;}#header td, #header th {padding: 0px 3px 0px 3px;}#header th { padding-top: 12px;padding-bottom: 12px;text-align: left;}</style>';
+          var htmlContent = '' + '<style type="text/css">' 
+            + 'table {' + 'font-family: "Phetsarath OT"; margin-top:7px;font-size:12px' 
+            +'}#content{border-collapse: collapse;width: 100%;}#content td, #content th {padding: 0px 3px 0px 3px;}#content th { padding-top: 12px;padding-bottom: 12px;text-align: left;}</style>';
+          // var htmlTable = '' + '<style type="text/css">' 
+            // + 'table {' + 'font-family: "Phetsarath OT"; margin-top:7px;font-size:12px' 
+            // +'}#table{border-collapse: collapse;width: 100%;}#table td, #table th {border: 1px solid #ddd;padding: 0px 3px 0px 3px;}#table th { padding-top: 12px;padding-bottom: 12px;text-align: left;}</style>';
+          var htmlTable = '' + '<style type="text/css">@font-face {font-family: "Phetsarath OT"; src: url("./../../uploads/fonts/Phetsarath OT.ttf");}table {font-family: "Phetsarath OT"; margin-top:7px;' +'}' + '#print-table,.print-table {border-collapse: collapse;width: 100%;}#print-table td, #print-table th,.print-table td,.print-table th {border: 1px solid #000000;padding-left: 3px;padding-right: 3px;}.bill-font{font-size: 17px;}</style>';
+          myWindow.document.write('</head><body>');
+          myWindow.document.write(data);
+          myWindow.document.write('</body></html>');
+          myWindow.document.write(htmlHeader);
+          myWindow.document.write(htmlContent);
+          myWindow.document.write(htmlTable);
+          myWindow.document.close();
+
+          myWindow.onload=function(){
+              myWindow.focus();
+              myWindow.print();
+          };
+        }
+  </script>
 </body>
 </html>
 

@@ -80,9 +80,22 @@ class ReportController
 	function sale(){
 		$Svr     = new ProductServices($this->db);
 		$help    = new HelpFunctions();
+		$day     = date('Y-m-d');
+		$dateNow = date('Y-m');
+		$filter  = $this->f3->get('GET.filter');
+
+		if($filter=='day'){
+			$items = $Svr->getSQL('SELECT * FROM tblsale WHERE DATE(created_at) = ?',[$day]);
+		}elseif($filter=='month'){
+			$items = $Svr->getSQL('SELECT * FROM tblsale WHERE SUBSTRING(created_at,1,7) = ?',[$dateNow]);
+		}else if($filter=='year'){
+			$items = $Svr->getSQL('SELECT * FROM tblsale WHERE YEAR(created_at) = ?',[$day]);
+		}else{
+			$items = $Svr->getSQL('SELECT * FROM tblsale',[]);
+		}
 
 		$this->f3->set('entrycount', $Svr->countAll([]));
-		$this->f3->set('items', $Svr->getSQL('SELECT * FROM tblsale',[]));
+		$this->f3->set('items', $items);
 		$this->f3->set('nav', 'report-sale');
 		$this->f3->set('subnav', 'report-sale');
 		$this->f3->set('strAction', 'Report Sale');
